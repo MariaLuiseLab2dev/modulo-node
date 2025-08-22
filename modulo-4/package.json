@@ -1,0 +1,13 @@
+{
+  "name": "modulo-4",
+  "version": "1.0.0",
+  "main": "atvd1.js",
+  "scripts": {
+    "start": "node atvd1.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
