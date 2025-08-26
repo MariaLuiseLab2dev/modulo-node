@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;   
+    align-items: stretch;
+    border: 2px solid #4c4c4c;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #333;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;   
+    margin-bottom: 1rem;
+}
+
+.input-text,
+.input-number,
+.button-send {
+    width: 100%;   
+}
+
+.input-text {
+    border: 2px solid #5e5e5e;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 0.8rem;
+    color: #4c4c4c;
+    margin-bottom: 0.5rem;
+}
+
+.input-number {
+    border: 2px solid #5e5e5e;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 0.8rem;
+    color: #4c4c4c;
+    margin-bottom: 0.5rem;
+    max-width: 5rem;
+}
+
+.button-send {
+    border: 2px solid #5e5e5e;
+    border-radius: 20px;
+    max-width: 5rem;
+    min-height: 1rem;
+}
+
+.product-list-title {
+    text-align: center;
+    color: #4c4c4c;
+    margin: 1rem 0;
+}
+
+.product-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem auto;
+    max-width: 600px;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border: 2px solid #4c4c4c;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #333;
+    margin-bottom: 0.5rem;
+    background-color: #f9f9f9;
+}
+
+.product-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.product-quantity {
+    color: #666;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+    color: #4c4c4c;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+@media (min-width: 426px) {
+    .form {
+        flex-direction: row;         
+        justify-content: space-between;
+        max-width: 600px;
+        margin: 1rem auto;
+        align-items: center;        
+  }
+
+  .form-group {
+        flex-direction: row;         
+        align-items: center;
+        gap: 0.5rem;                
+        margin-bottom: 0;            
+  }
+
+  .input-text,
+  .input-number {
+        width: auto;   
+  }
+}
