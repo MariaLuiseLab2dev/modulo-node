@@ -34,4 +34,3 @@ app.listen(port, () => {
     console.log(`API está na porta ${port} e rodando em http://localhost:8080`);
 });
 
-// http

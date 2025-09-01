@@ -1,0 +1,209 @@
+/* style.css - versão limpa mantendo seu estilo, com melhorias e zebra */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- layout do formulário (mantendo seu estilo) --- */
+.form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 2px solid #4c4c4c;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #333;
+    margin: 1rem;
+    padding: 1rem;
+    background: #fff;
+}
+
+/* grupos do formulário */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+}
+
+/* botões do topo */
+.buttons {
+    margin: 0.8rem 1rem;
+    display: flex;
+    gap: .8rem;
+    align-items: center;
+}
+
+/* inputs e botões */
+.input-text,
+.input-number {
+    border: 2px solid #5e5e5e;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 0.9rem;
+    color: #4c4c4c;
+    background: #fff;
+    transition: box-shadow .12s ease, border-color .12s ease;
+}
+
+.input-text:focus,
+.input-number:focus {
+    outline: none;
+    border-color: #2b7a78;
+    box-shadow: 0 4px 14px rgba(43, 122, 120, 0.08);
+}
+
+.input-number {
+    max-width: 6.5rem;
+}
+
+/* botões principais (topo) */
+.button-post,
+.button-get {
+    border: 2px solid #5e5e5e;
+    border-radius: 20px;
+    max-width: 8rem;
+    min-height: 2.2rem;
+    padding: 6px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(180deg, #ffffff, #f3f3f3);
+}
+
+/* destaque do ADD */
+.button-post {
+    background: linear-gradient(180deg, #2b7a78, #0f5f5d);
+    color: #fff;
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* título da lista */
+.product-list-title {
+    text-align: center;
+    color: #000;
+    margin: 1rem 0;
+    font-weight: 800;
+}
+
+/* TABELA - estilo básico e responsivo */
+#product-table {
+    width: 95%;
+    margin: 0.6rem auto 2rem;
+    border-collapse: separate;
+    /* importante para o efeito "card" entre linhas */
+    border-spacing: 0 10px;
+    /* espaço vertical entre linhas (efeito cartão) */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* cabeçalho */
+#product-table thead th {
+    text-align: left;
+    padding: 12px 14px;
+    background: #efefef;
+    border-bottom: 1px solid #ddd;
+    font-weight: 700;
+}
+
+/* células padrão */
+#product-table td {
+    padding: 12px 14px;
+    vertical-align: middle;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+    /* cada célula tem fundo branco (sobressai do spacing) */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* --- ZEBRA: linhas pares/ímpares --- */
+/* linha ímpar (1,3,5...) */
+#product-table tbody tr:nth-child(odd) td {
+    background: #ffffff;
+}
+
+/* linha par (2,4,6...) */
+#product-table tbody tr:nth-child(even) td {
+    background: #fbfcfd;
+}
+
+#product-table tbody tr:hover td {
+    background: #f2fbfb;
+}
+
+/* inputs dentro das células (ocupam toda largura disponível) */
+#product-list input[type="text"],
+#product-list input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: transparent;
+    font-size: 0.95rem;
+}
+
+/* coluna ID - reduzir fonte e cortar overflow */
+#product-table td.product-id {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #666;
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* actions wrapper e botões (pequenos e arredondados) */
+.action-buttons {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.button-action {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 7px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* variações de cor */
+.button-action.button-primary {
+    background: linear-gradient(180deg, #2b7a78, #0f5f5d);
+    color: #fff;
+}
+
+.button-action.button-danger {
+    background: linear-gradient(180deg, #d64545, #b82a2a);
+    color: #fff;
+}
+
+/* garantir que, se aplicar .product-item, a linha se comporte como TR */
+#product-list .product-item {
+    display: table-row;
+}
+
+/* responsividade básica */
+@media (max-width: 700px) {
+    .form {
+        flex-direction: column;
+    }
+
+    .buttons {
+        justify-content: center;
+    }
+
+    /* esconder a coluna ID em telas pequenas para economizar espaço */
+    #product-table thead th:nth-child(1),
+    #product-table tbody td:nth-child(1) {
+        display: none;
+    }
+
+    #product-table td,
+    #product-table thead th {
+        padding: 10px;
+        font-size: 0.92rem;
+    }
+}

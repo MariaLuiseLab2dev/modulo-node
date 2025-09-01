@@ -1,15 +1,15 @@
-
 const form = document.querySelector(".form");
-const productListUl = document.getElementById('product-list');
 
 async function loadProducts() {
     try {
-        const res = await fetch('/products'); // chama a rota que retorna JSON
-        if (!res.ok) {
-            throw new Error('Erro na requisição: ' + res.status);
+        const res = await axios.get('/products'); // chama a rota que retorna JSON
+        console.log(res);
+        if (res.status !== 200) {
+            throw new Error('Erro na requisição: ' + res.status + ' - ' + res.message);
         }
-
-        const products = await res.json(); // espera a lista de produtos vim
+        console.log(res.data);
+        const products = res.data; // espera a lista de produtos vim
+        
         const ul = document.getElementById('product-list');
         ul.innerHTML = '';
 
