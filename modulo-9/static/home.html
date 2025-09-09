@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="main.js" defer></script>
+</head>
+
+<body>
+    <nav>
+        <button onclick="mostrarSecao('tarefas')">Tarefas</button>
+        <button onclick="mostrarSecao('usuarios')">Usuários</button>
+    </nav>
+
+    <!-- Seção de Tarefas -->
+    <section id="tarefas">
+        <h2>Criar Tarefa</h2>
+        <input type="text" id="titulo" placeholder="Título">
+        <input type="text" id="descricao" placeholder="Descrição">
+        <button id="btnCreate">Criar</button>
+
+        <h2>Tarefas</h2>
+        <div id="tasks"></div>
+
+        <h2>Atualizar Tarefa</h2>
+        <input type="number" id="updateId" placeholder="ID">
+        <input type="text" id="updateTitulo" placeholder="Novo Título">
+        <input type="text" id="updateDescricao" placeholder="Nova Descrição">
+        <button id="btnUpdate">Atualizar</button>
+
+        <h2>Deletar Tarefa</h2>
+        <input type="number" id="deleteId" placeholder="ID">
+        <button id="btnDelete">Deletar</button>
+    </section>
+
+    <!-- Seção de Usuários -->
+    <section id="usuarios" style="display:none;"> <!-- inicialmente setado como none -->
+        <h2>Criar Usuário</h2>
+        <input type="text" id="nome" placeholder="Nome">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="senha" placeholder="Senha">
+        <button id="btnCreateUser">Criar</button>
+
+        <h2>Usuários</h2>
+        <div id="users"></div>
+
+        <h2>Atualizar Usuário</h2>
+        <input type="number" id="updateUserId" placeholder="ID">
+        <input type="text" id="updateNome" placeholder="Novo Nome">
+        <input type="email" id="updateEmail" placeholder="Novo Email">
+        <input type="password" id="updateSenha" placeholder="Nova Senha">
+        <button id="btnUpdateUser">Atualizar</button>
+
+        <h2>Deletar Usuário</h2>
+        <input type="number" id="deleteUserId" placeholder="ID">
+        <button id="btnDeleteUser">Deletar</button>
+    </section>
+</body>
+
+</html>
