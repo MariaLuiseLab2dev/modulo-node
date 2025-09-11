@@ -161,17 +161,18 @@ select DISTINCT nome from Clientes;
 -- o valor total gasto,
 -- a média,
 -- maior e menor de cada pedido,
--- 
+-- ordernar pelo total gasto do maior para o menor
 SELECT 
     UPPER (c.nome) AS nome_maisculo,
     LOWER (c.nome) AS nome_minusculo,
     COUNT(p.id_pedido) AS qtd_pedidos,
     COUNT(DISTINCT pr.id_produto) AS qtd_pedidos_diferentes,
-    (p.valor * i.quantidade) AS valor_total,
+    (pr.preco * i.quantidade) AS valor_total,
     AVG(p.valor) AS media_pedidos,
-    
-FROM pedidos p
-LEFT JOIN clientes c 
+    MAX(p.valor) AS maior_pedido,
+    MIN(p.valor) AS menor_pedido
+FROM clientes c
+LEFT JOIN pedidos p 
     ON p.id_cliente = c.id_cliente
 
 LEFT JOIN Itens_Pedido i
@@ -180,4 +181,223 @@ LEFT JOIN Itens_Pedido i
 LEFT JOIN Produtos pr
     ON i.id_produto = pr.id_produto
 
+GROUP BY c.nome
+ORDER BY valor_total DESC;
+
+-- ATIVIDADE 2
+-- select que traga o nome da cidade,
+-- o produto mais vendido em quantidade
+-- o total de unidades desse produto vendidas
+-- valor total faturado com esse produto
+
+SELECT
+  c.cidade,
+  pr.nome AS produto_mais_vendido,
+  SUM(i.quantidade) AS quantidade_vendida,
+  (pr.preco * i.quantidade) AS valor_total_faturado
+
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+
+LEFT JOIN itens_pedido i
+    ON i.id_pedido = p.id_pedido
+
+LEFT JOIN produtos pr
+    ON i.id_produto = pr.id_produto
+GROUP BY c.cidade, pr.nome
+ORDER BY quantidade_vendida DESC, c.cidade;  
+
+
+
+-- ATIVIDADE 3
+-- select do nome do cliente em maiúsculo,
+-- cidade,
+-- total gasto pelo cliente,
+-- média de gastos da cidade daquele cliente
+
+
+SELECT
+  UPPER(c.nome) AS nome_cliente,
+  c.cidade,
+  (pr.preco * i.quantidade) AS total_gasto_cliente,
+  AVG(pr.preco * i.quantidade)
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+LEFT JOIN Itens_Pedido i
+    ON i.id_pedido = p.id_pedido
+
+LEFT JOIN Produtos pr
+    ON i.id_produto = pr.id_produto
 GROUP BY c.nome;
+
+
+-- ATIVIDADE 4
+-- select que retorne o nome do produto em minúsculo, 
+-- quantos pedidos ele apareceu, 
+-- quantidade total vendida, 
+-- valor médio gasto quando esse produto foi comprado, 
+-- maior e menor valor de pedido que ele apareceu
+
+SELECT
+  LOWER(pr.nome) AS produto_nome,
+  COUNT(pr.nome) AS produto_em_pedidos,
+  SUM(i.quantidade) AS qtd_total_vendida,
+  AVG(pr.preco * i.quantidade) AS valor_medio_gasto,
+  MIN(p.valor) AS menor_valor_pedido,
+  MAX(p.valor) AS maior_valor_pedido
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+
+LEFT JOIN Itens_Pedido i
+    ON i.id_pedido = p.id_pedido
+
+JOIN Produtos pr
+    ON i.id_produto = pr.id_produto
+
+GROUP BY pr.nome;
+
+SELECT
+  pr.nome,
+  pr.preco
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+
+LEFT JOIN Itens_Pedido i
+    ON i.id_pedido = p.id_pedido
+
+JOIN Produtos pr
+    ON i.id_produto = pr.id_produto
+WHERE c.nome = 'Ana';
+
+SELECT 
+  (p.valor) AS soma_pedidos_por_cidade
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+
+LEFT JOIN Itens_Pedido i
+    ON i.id_pedido = p.id_pedido
+
+JOIN Produtos pr
+    ON i.id_produto = pr.id_produto
+WHERE c.cidade = 'São Paulo';
+
+-- SELECIONE O NOME DO PRODUTO E O PRECO Q N APARECE EM PEDIDO 
+SELECT
+  pr.nome,
+  pr.preco
+   
+FROM produtos pr
+LEFT JOIN itens_pedido i
+    ON pr.id_produto = i.id_produto
+WHERE i.id_produto IS NULL;
+
+INSERT INTO produtos VALUES (5, 'Headphone', 200);
+
+SELECT * FROM itens_pedido;
+
+-- Liste todos os clientes que nunca fizeram um pedido
+SELECT 
+  c.nome,
+  c.cidade,
+  c.idade
+FROM 
+  clientes c
+  LEFT JOIN
+  pedidos p
+  ON p.id_cliente = c.id_cliente
+WHERE p.id_cliente IS NULL;
+
+INSERT INTO clientes VALUES (5, 'Rogério', 'Salvador', 28);
+SELECT * FROM PRODUTOS;
+
+-- Cliente que comprou um produto específico
+SELECT 
+  c.nome,
+  c.cidade,
+  p.data_pedido,
+  i.quantidade
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+
+LEFT JOIN itens_pedido i
+    ON i.id_pedido = p.id_pedido
+
+LEFT JOIN Produtos pr
+    ON i.id_produto = pr.id_produto
+WHERE pr.nome = 'Notebook';
+
+
+-- valor total gasto por cliente
+SELECT
+  c.nome,
+  c.cidade,
+  SUM(i.quantidade * pr.preco) AS valor_total
+FROM clientes c
+LEFT JOIN pedidos p 
+    ON p.id_cliente = c.id_cliente
+
+LEFT JOIN itens_pedido i
+    ON i.id_pedido = p.id_pedido
+
+LEFT JOIN Produtos pr
+    ON i.id_produto = pr.id_produto
+GROUP BY c.nome;
+
+-- liste três clientes com maior gasto, nome, cidade e o total
+SELECT 
+  c.nome,
+  c.cidade,
+  SUM(pr.preco * i.quantidade) AS gasto
+  
+FROM clientes c 
+LEFT JOIN pedidos p
+  ON p.id_cliente = c.id_cliente
+
+LEFT JOIN itens_pedido i
+  ON i.id_pedido = p.id_pedido
+
+LEFT JOIN produtos pr
+  ON i.id_produto = pr.id_produto
+GROUP BY c.nome
+ORDER BY gasto DESC
+LIMIT 3; -- tres maiores
+
+SELECT * FROM PRODUTOS;
+
+-- selecione todos os produtos que foram comprados por todos os clientes, nome e a qtd total vendida do produto
+SELECT
+  pr.nome,
+  pr.preco
+
+FROM produtos pr
+LEFT JOIN  itens_pedido i
+  ON pr.id_produto = i.id_produto;
+
+
+-- cliente mais fiel + pedidos, nome do cliente, cidade, qtd e pedidos, data do 1º e útlimo pedido
+SELECT
+  c.nome,
+  c.cidade,
+  COUNT (i.quantidade) AS qtd,
+  MIN(p.data_pedido) AS menor_data,
+  MAX(p.data_pedido) AS maior_data
+
+FROM clientes c 
+LEFT JOIN pedidos p
+  ON p.id_cliente = c.id_cliente
+
+LEFT JOIN itens_pedido i
+  ON i.id_pedido = p.id_pedido
+
+LEFT JOIN produtos pr
+  ON i.id_produto = pr.id_produto
+GROUP BY c.nome
+ORDER BY qtd DESC
+LIMIT 1;
+
