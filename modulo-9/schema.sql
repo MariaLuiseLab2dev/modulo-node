@@ -30,3 +30,5 @@ INSERT INTO tarefas
 VALUES (3, 'Uma outra atividade', 'Mais uma atividade',  true,datetime('now'), 2); 
 
 SELECT * FROM usuarios;
+
+
