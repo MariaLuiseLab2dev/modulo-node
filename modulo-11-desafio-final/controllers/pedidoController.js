@@ -1,24 +1,30 @@
 const { runQuery, getQuery, allQuery } = require('../database/database-helper');
-const { validarPedido, validaIdPedido } = require('../utils/utils-helper');
+const { validarPedido, validaIdPedido, formatarHorario } = require('../utils/utils-helper');
 
 exports.createOrder = async (req, res, next) => {
     try {
-        const { valor_total, itens } = await validarPedido(req.body);
+        const { itens } = await validarPedido(req.body);
 
-        // 1. Insere o pedido
+        const valor_total = itens.reduce((acc, item) => {
+            return acc + (item.quantidade * item.preco_unitario);
+        }, 0);
+
+        // Insere o pedido
         const sqlInsertPedido = `INSERT INTO pedidos (valor_total) VALUES (?)`;
         const resultadoPedido = await runQuery(sqlInsertPedido, [valor_total]);
-        const id_pedido = resultadoPedido.lastID;
+        const id_pedido = resultadoPedido.lastID; //pego o id criado
 
-        // 2. Insere os itens
+        // Insere os itens
         for (const item of itens) {
+            const subtotal = item.quantidade * item.preco_unitario;
+
             await runQuery(
-                `INSERT INTO itens_pedido (id_pedido, id_produto, quantidade)
-                 VALUES (?, ?, ?)`,
-                [id_pedido, item.id_produto, item.quantidade]
+                `INSERT INTO itens_pedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
+                 VALUES (?, ?, ?, ?, ?)`,
+                [id_pedido, item.id_produto, item.quantidade, item.preco_unitario, subtotal]
             );
 
-            // 3. Atualiza estoque
+            // Atualiza estoque
             await runQuery(
                 `UPDATE produtos
                  SET estoque = estoque - ?
@@ -30,7 +36,7 @@ exports.createOrder = async (req, res, next) => {
 
         res.status(201).json({
             id_pedido,
-            data_criacao: new Date().toISOString().split("T")[0],
+            data_criacao: new Date().toISOString(),
             valor_total,
             itens
         });
@@ -58,9 +64,7 @@ exports.getOrderById = async (req, res, next) => {
         const pedido = await getQuery(sql, params);
 
         return res.status(200).json(pedido);
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 }
-
-// tem como dar um update no pedido?

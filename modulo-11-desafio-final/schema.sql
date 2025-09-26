@@ -5,8 +5,6 @@ CREATE TABLE categorias (
     status              INTEGER     NOT NULL DEFAULT 1
 );
 
-SELECT * FROM categorias;
-
 CREATE TABLE produtos (
     id_produto          INTEGER     PRIMARY KEY AUTOINCREMENT,
     nome                TEXT        UNIQUE NOT NULL,
@@ -19,22 +17,20 @@ CREATE TABLE produtos (
     FOREIGN KEY (id_categoria)  REFERENCES categorias (id_categoria)
 );
 
-INSERT INTO produtos VALUES (1, 'produtoA', 'produtoa', 'descricaoA', 'descricaoA', 25.00, 10, 6);
-
 CREATE TABLE pedidos (
     id_pedido       INTEGER     PRIMARY KEY AUTOINCREMENT,
     data_criacao    DATE        DEFAULT (date('now')),
     valor_total     REAL        NOT NULL
 );
 
-drop table pedidos;
-
 CREATE TABLE itens_pedido (
     id_item     INTEGER     PRIMARY KEY AUTOINCREMENT,
     id_pedido   INTEGER,
     id_produto  INTEGER,
     quantidade  INTEGER     CHECK (quantidade > 0),
-    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
+    preco_unitario  REAL    NOT NULL,
+    subtotal        REAL    NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido) ON DELETE CASCADE,
     FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
 );
 
@@ -44,22 +40,24 @@ CREATE TABLE carrinhos (
 );
 
 CREATE TABLE itens_carrinho (
-    id_item INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_item     INTEGER PRIMARY KEY AUTOINCREMENT,
     id_carrinho INTEGER NOT NULL,
-    id_produto INTEGER NOT NULL,
-    quantidade INTEGER NOT NULL CHECK (quantidade > 0),
+    id_produto  INTEGER NOT NULL,
+    quantidade  INTEGER NOT NULL CHECK (quantidade > 0),
+    preco       REAL,
     FOREIGN KEY (id_carrinho) REFERENCES carrinhos(id_carrinho),
     FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
 );
 
+SELECT * FROM itens_carrinho WHERE id_carrinho = 1;
+UPDATE itens_carrinho
+        SET quantidade = 5, preco = 150.50
+        WHERE id_carrinho = 1;
 INSERT INTO categorias (nome, nome_normalizado, status) VALUES ('móveis','moveis',1);
--- SELECT id_categoria 
--- FROM categorias 
--- WHERE nome_normalizado = 'eletronicos';
 
 select * from produtos;
 
-PRAGMA table_info(pedidos);
+PRAGMA table_info(itens_carrinho);
 
 SELECT
   (
@@ -97,7 +95,25 @@ SELECT *
         WHERE id_categoria IS NOT 12;
 
  SELECT SUM(estoque) AS totalEstoque
-        FROM produtos
-        WHERE id_categoria = 12
+    FROM produtos
+    WHERE id_categoria = 12
 
-DELETE FROM 
+INSERT INTO carrinhos DEFAULT VALUES;
+INSERT INTO itens_carrinho (id_carrinho, id_produto, quantidade, preco) VALUES (1, 5, 2, 55.9);
+SELECT * FROM carrinhos;
+
+SELECT * FROM itens_carrinho;
+
+SELECT 
+       ic.id_item,
+       ic.id_carrinho,
+       ic.id_produto,
+       ic.quantidade,
+       ic.preco,
+       p.nome
+FROM itens_carrinho AS ic
+JOIN produtos AS p 
+ON ic.id_produto = p.id_produto
+WHERE ic.id_carrinho = 1;
+
+

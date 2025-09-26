@@ -6,6 +6,7 @@ const app = express();
 const categoryRoutes = require('./routes/categorias');
 const productRoutes = require('./routes/produtos');
 const orderRoutes = require('./routes/pedidos');
+const cartRoutes = require('./routes/carrinho');
 
 app.use(express.json());
 app.use(express.static("static"));
@@ -13,10 +14,10 @@ app.use(cors()); // permite todas as origens
 app.use('/categorias', categoryRoutes);
 app.use('/produtos', productRoutes);
 app.use('/pedidos', orderRoutes);
+app.use('/carrinho', cartRoutes);
 
 const port = process.env.PORT;
 const hostname = process.env.HOSTNAME;
-
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {

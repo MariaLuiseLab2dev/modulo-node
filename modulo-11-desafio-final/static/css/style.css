@@ -1,0 +1,36 @@
+@font-face{
+    font-family: 'Montserrat';
+
+    /*Caso a fonte esteja na mesma pasta*/
+    src: url("fonts/Montserrat-Regular.ttf");
+}
+
+* {
+    font-family: Montserrat, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: 900;
+    color: #6C3082;
+}
+
+nav {
+    background-color: #e9e5da;
+    border-radius: 4rem;
+}
+
+li {
+    display: inline-block;
+    padding-right: 1rem;
+    border-radius: 1rem;
+    background-color: #FFF;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+li:focus {
+    background-color: #FFF;
+}

@@ -31,13 +31,13 @@ exports.createProduct = async (req, res, next) => {
             idCategoria
         } = await validarProduto(
             { nome, descricao, id_categoria, preco, estoque, status }
-        )
+        );
 
         const sqlInsert = `
-      INSERT INTO produtos
-        (nome, nome_normalizado, descricao, preco, estoque, status, id_categoria)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `
+            INSERT INTO produtos
+            (nome, nome_normalizado, descricao, preco, estoque, status, id_categoria)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
         const result = await runQuery(sqlInsert, [
             nomeValidado,
             nomeNormalizado,
@@ -139,8 +139,8 @@ exports.updateProductById = async (req, res, next) => {
             estoque         = ?,
             status          = ?,
             id_categoria    = ?
-        WHERE id_produto = ?
-        `
+            WHERE id_produto = ?
+        `;
         const result = await runQuery(sqlUpdate, [
             nomeValidado,
             nomeNormalizado,
