@@ -66,7 +66,21 @@ exports.createProduct = async (req, res, next) => {
 
 exports.getAllProducts = async (req, res, next) => {
     try {
-        const sqlSelectAll = `SELECT * FROM produtos`;
+        const sqlSelectAll = `
+        SELECT 
+            p.id_produto,
+            p.nome,
+            p.descricao,
+            p.preco,
+            p.estoque,
+            p.status,
+            p.id_categoria,
+            c.nome AS nome_categoria
+        FROM produtos p
+        JOIN categorias c 
+        ON p.id_categoria = c.id_categoria
+        ORDER BY p.id_produto ASC
+        `;
         const produtos = await allQuery(sqlSelectAll);
         return res.status(200).json(produtos)
     } catch (error) {

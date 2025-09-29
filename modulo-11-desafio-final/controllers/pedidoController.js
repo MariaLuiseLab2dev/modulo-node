@@ -47,7 +47,17 @@ exports.createOrder = async (req, res, next) => {
 
 exports.getAllOrders = async (req, res, next) => {
     try {
-        const sqlSelectAll = `SELECT * FROM pedidos`;
+        const sqlSelectAll = `
+        SELECT
+            p.id_pedido,
+            p.data_criacao,
+            p.valor_total,
+            ip.quantidade
+        FROM pedidos p
+        JOIN itens_pedido ip 
+        ON p.id_pedido = ip.id_pedido
+        ORDER BY p.id_pedido ASC
+`;
         const pedidos = await allQuery(sqlSelectAll);
         return res.status(200).json(pedidos);
     } catch (error) {

@@ -1,36 +1,101 @@
-@font-face{
+@font-face {
     font-family: 'Montserrat';
-
-    /*Caso a fonte esteja na mesma pasta*/
     src: url("fonts/Montserrat-Regular.ttf");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url("fonts/Montserrat-Bold.ttf");
+    font-weight: 700;
+    /* bold */
+    font-style: normal;
 }
 
 * {
-    font-family: Montserrat, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
 h1 {
-    font-weight: 900;
+    font-weight: 700;
+    padding: 1rem;
     color: #6C3082;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    color: #6C3082;
+    margin-bottom: 1rem;
+}
+
+a { 
+    text-decoration: none;
+    color: #000;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 nav {
-    background-color: #e9e5da;
-    border-radius: 4rem;
+    background-color: #e9e5da; 
+    border-radius: 4rem;       
+    margin: 2rem;      
+    padding: 0.2rem;        
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    min-width: 650px;        
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 li {
-    display: inline-block;
-    padding-right: 1rem;
-    border-radius: 1rem;
-    background-color: #FFF;
-    font-size: 0.8rem;
+    flex: 1; 
     text-align: center;
 }
 
-li:focus {
-    background-color: #FFF;
+li a {
+    display: block;
+    padding: 0.3rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: #000;
+    font-size: 0.9rem;
+}
+
+li a.active {
+    background-color: #ffffff;
+    border-radius: 2rem;
+}
+
+/* Esconde todas as seções */
+section {
+    display: none;
+    padding: 1rem;
+}
+
+/* Mostra só a seção ativa */
+section.active {
+    display: block;
 }

@@ -117,3 +117,28 @@ ON ic.id_produto = p.id_produto
 WHERE ic.id_carrinho = 1;
 
 
+SELECT 
+    p.id_produto,
+    p.nome,
+    p.descricao,
+    p.preco,
+    p.estoque,
+    p.status,
+    p.id_categoria,
+    c.nome AS nome_categoria
+FROM produtos p
+JOIN categorias c 
+ON p.id_categoria = c.id_categoria
+ORDER BY p.id_produto ASC;
+
+SELECT
+    p.id_pedido,
+    p.data_criacao,
+    p.valor_total,
+    ip.quantidade
+FROM pedidos p
+JOIN itens_pedido ip 
+ON p.id_pedido = ip.id_pedido
+ORDER BY p.id_pedido ASC;
+
+SELECT * FROM itens_pedido;
