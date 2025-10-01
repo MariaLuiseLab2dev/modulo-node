@@ -28,13 +28,11 @@ let editingCategoryId = null;
 let editingProductId = null;
 
 // filtros
-const dataInicial = document.getElementById("filtroDataInicial").value;
-const dataFinal = document.getElementById("filtroDataFinal").value;
-const valorMin = document.getElementById("filtroValorMin").value;
-const valorMax = document.getElementById("filtroValorMax").value;
 const btnToggleFiltros = document.getElementById("btnToggleFiltros");
 const filtrosDiv = document.getElementById("filtrosPedidos");
 const btnLimparFiltros = document.getElementById("btnLimparFiltros");
+const inputDataInicial = document.getElementById("filtroDataInicial");
+const inputDataFinal = document.getElementById("filtroDataFinal");
 
 function formatarReal(valor) {
     if (valor == null || isNaN(valor)) return "";
@@ -93,9 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // inicia mostrando categorias
     document.getElementById("categorias").classList.add("active");
     carregarCategorias();
-
-    const inputPreco = document.getElementById("precoProduto");
-    aplicarMascaraMoeda(inputPreco);
 
     // toggle label categoria
     if (statusCheckboxCategoria) {
@@ -183,11 +178,17 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelarProduto.addEventListener("click", (e) => {
         e.preventDefault();
         dialogProduto.close();
-        resetProductDialogState();
+        resetarDialogProduto();
     });
+    
+    const inputPreco = document.getElementById("precoProduto");
+    aplicarMascaraMoeda(inputPreco);
 
     formProduto.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        const inputPreco = document.getElementById("precoProduto");
+        aplicarMascaraMoeda(inputPreco);
 
         // pega o valor formatado do input
         let precoFormatado = document.getElementById("precoProduto").value;
@@ -238,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             dialogProduto.close();
-            resetProductDialogState();
+            resetarDialogProduto();
             await carregarProdutos();
         } catch (err) {
             console.error("Erro ao salvar produto:", err);
@@ -253,27 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const precoInput = document.getElementById("precoProduto");
-
-    // aplica máscara enquanto digita
-    precoInput.addEventListener("input", (e) => {
-        let valor = e.target.value;
-
-        // remove tudo que não for dígito, vírgula ou ponto
-        valor = valor.replace(/[^\d.,]/g, "");
-
-        // substitui vírgula por ponto para virar número válido
-        valor = valor.replace(",", ".");
-
-        const numero = parseFloat(valor);
-
-        if (!isNaN(numero)) {
-            e.target.value = formatarReal(numero);
-        } else {
-            e.target.value = "";
-        }
-    });
-
     if (btnToggleFiltros && filtrosDiv) {
         btnToggleFiltros.addEventListener("click", () => {
             if (filtrosDiv.style.display === "none" || filtrosDiv.style.display === "") {
@@ -285,6 +265,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // enquanto digita
+    const inputValorMin = document.getElementById("filtroValorMin");
+    const inputValorMax = document.getElementById("filtroValorMax");
+    // aplica máscara de moeda nos inputs de valor
+    aplicarMascaraMoeda(inputValorMin);
+    aplicarMascaraMoeda(inputValorMax);
 
     if (btnFiltrarPedidos) {
         btnFiltrarPedidos.addEventListener("click", () => {
@@ -435,7 +422,7 @@ async function carregarProdutos() {
         document.querySelectorAll(".editarProduto").forEach(btn => {
             btn.addEventListener("click", () => {
                 const id = btn.dataset.id;
-                handleEditProduct(id);
+                editaProduto(id);
             });
         });
     } catch (error) {
@@ -443,7 +430,7 @@ async function carregarProdutos() {
     }
 }
 
-async function handleEditProduct(id) {
+async function editaProduto(id) {
     try {
         const res = await fetch(`http://127.0.0.1:3001/produtos/${id}`);
         if (!res.ok) throw new Error("Produto não encontrado");
@@ -453,10 +440,10 @@ async function handleEditProduct(id) {
         await carregarCategoriasNoSelect();
 
         // preenche campos
-        document.getElementById("nomeProduto").value = produto.nome || "";
-        document.getElementById("descricaoProduto").value = produto.descricao || "";
-        document.getElementById("precoProduto").value = produto.preco ?? "";
-        document.getElementById("estoqueProduto").value = produto.estoque ?? "";
+        document.getElementById("nomeProduto").value = produto.nome;
+        document.getElementById("descricaoProduto").value = produto.descricao;
+        document.getElementById("precoProduto").value = produto.preco;
+        document.getElementById("estoqueProduto").value = produto.estoque;
         if (produto.id_categoria != null) selectCategoria.value = String(produto.id_categoria);
         statusProduto.checked = produto.status === 1;
         statusProdutoLabel.textContent = statusProduto.checked ? "Visível" : "Invisível";
@@ -475,7 +462,7 @@ async function handleEditProduct(id) {
     }
 }
 
-function resetProductDialogState() {
+function resetarDialogProduto() {
     editingProductId = null;
     formProduto.reset();
     statusProduto.checked = true;
@@ -575,22 +562,47 @@ async function carregarCategoriasNoSelect() {
 }
 
 async function carregarPedidosComFiltros() {
+    // Captura os valores digitados nos inputs de filtro
+    const dataInicial = document.getElementById("filtroDataInicial").value;
+    const dataFinal = document.getElementById("filtroDataFinal").value;
+
+    // Captura os valores dos inputs de moeda e converte para número
+    const valorMin = document.getElementById("filtroValorMin").value
+        .replace(/[R$\s.]/g, "") // remove R$, espaços e pontos
+        .replace(",", ".");      // troca vírgula por ponto
+
+    const valorMax = document.getElementById("filtroValorMax").value
+        .replace(/[R$\s.]/g, "")
+        .replace(",", ".");
+    
+    // Cria um objeto para montar a query string da URL
     const params = new URLSearchParams();
+
+    // Adiciona os filtros à URL apenas se estiverem preenchidos
     if (dataInicial) params.append("dataInicial", dataInicial);
     if (dataFinal) params.append("dataFinal", dataFinal);
     if (valorMin) params.append("valorMin", valorMin);
     if (valorMax) params.append("valorMax", valorMax);
 
     try {
+        // Faz a requisição GET para o back-end com os filtros aplicados
         const response = await fetch(`http://127.0.0.1:3001/pedidos?${params.toString()}`);
+
+        // Se a resposta não for OK (status 200), lança erro
         if (!response.ok) throw new Error("Erro ao buscar pedidos");
+
+        // Converte a resposta da API para JSON (lista de pedidos)
         const pedidos = await response.json();
 
+        // Seleciona o corpo da tabela de pedidos e limpa o conteúdo anterior
         const tbody = document.querySelector("#tabelaPedidos tbody");
         tbody.innerHTML = "";
 
+        // Para cada pedido recebido, cria uma linha na tabela
         pedidos.forEach(pedido => {
             const tr = document.createElement("tr");
+
+            // Preenche a linha com os dados do pedido
             tr.innerHTML = `
                 <td>${pedido.id_pedido}</td>
                 <td>${new Date(pedido.data_criacao).toLocaleString("pt-BR")}</td>
@@ -598,14 +610,16 @@ async function carregarPedidosComFiltros() {
                 <td>${formatarReal(pedido.valor_total)}</td>
                 <td><button class="detalhes" data-id="${pedido.id_pedido}">detalhes</button></td>
             `;
+
+            // Adiciona a linha à tabela
             tbody.appendChild(tr);
         });
 
-        // reanexa eventos de detalhes
+        // coloca de novo os eventos de clique nos botões "detalhes" recém-criados
         document.querySelectorAll(".detalhes").forEach(btn => {
             btn.addEventListener("click", () => {
-                const id = btn.dataset.id;
-                carregarPedidoPorId(id);
+                const id = btn.dataset.id; // pega o id do pedido
+                carregarPedidoPorId(id);   // chama a função que abre o dialog com os detalhes
             });
         });
 

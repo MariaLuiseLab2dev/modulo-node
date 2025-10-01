@@ -46,61 +46,82 @@ exports.createOrder = async (req, res, next) => {
     }
 };
 
+// Exporta a função getAllOrders para ser usada nas rotas
 exports.getAllOrders = async (req, res, next) => {
     try {
+        // Desestrutura os filtros enviados via query string (ex: /pedidos?valorMin=100)
         const { dataInicial, dataFinal, valorMin, valorMax } = req.query;
 
+        // Monta o início da query SQL, selecionando pedidos e contando itens
         let sql = `
             SELECT
-                p.id_pedido,
-                p.data_criacao,
-                p.valor_total,
-                COUNT(ip.id_item) as quantidade
+                p.id_pedido,              -- id do pedido
+                p.data_criacao,           -- data de criação do pedido
+                p.valor_total,            -- valor total do pedido
+                COUNT(ip.id_item) as quantidade -- quantidade de itens no pedido
             FROM pedidos p
-            JOIN itens_pedido ip ON p.id_pedido = ip.id_pedido
+            JOIN itens_pedido ip ON p.id_pedido = ip.id_pedido -- join para contar itens
             `;
+
+        // Array que vai guardar os valores dos parâmetros (para evitar SQL injection)
         const params = [];
+
+        // Array que vai guardar as condições do WHERE dinamicamente
         const conditions = [];
 
+        // Se o usuário passou dataInicial, adiciona condição e parâmetro
         if (dataInicial) {
             conditions.push("p.data_criacao >= ?");
-            params.push(dataInicial + " 00:00:00");
-        }
-        if (dataFinal) {
-            conditions.push("p.data_criacao <= ?");
-            params.push(dataFinal + " 23:59:59");
-        }
-        if (valorMin) {
-            conditions.push("p.valor_total >= ?");
-            params.push(parseFloat(valorMin));
-        }
-        if (valorMax) {
-            conditions.push("p.valor_total <= ?");
-            params.push(parseFloat(valorMax));
+            params.push(dataInicial + " 00:00:00"); // concatena hora inicial
         }
 
-        // só adiciona WHERE se houver condições
+        // Se o usuário passou dataFinal, adiciona condição e parâmetro
+        if (dataFinal) {
+            conditions.push("p.data_criacao <= ?");
+            params.push(dataFinal + " 23:59:59"); // concatena hora final
+        }
+
+        // Se o usuário passou valorMin, adiciona condição e parâmetro
+        if (valorMin) {
+            conditions.push("p.valor_total >= ?");
+            params.push(parseFloat(valorMin)); // garante que é número
+        }
+
+        // Se o usuário passou valorMax, adiciona condição e parâmetro
+        if (valorMax) {
+            conditions.push("p.valor_total <= ?");
+            params.push(parseFloat(valorMax)); // garante que é número
+        }
+
+        // Só adiciona WHERE se houver pelo menos uma condição
         if (conditions.length > 0) {
             sql += " WHERE " + conditions.join(" AND ");
         }
 
-        sql += " GROUP BY p.id_pedido ORDER BY p.data_criacao DESC";
+        // Finaliza a query agrupando por pedido e ordenando pela data mais recente
+        sql += " GROUP BY p.id_pedido";
 
+        // Executa a query no banco, passando os parâmetros
         const pedidos = await allQuery(sql, params);
 
+        // Converte a data_criacao para formato ISO (padrão internacional)
         const pedidosComISO = pedidos.map(p => ({
             ...p,
             data_criacao: new Date(p.data_criacao).toISOString()
         }));
-        
+
+        // Loga no console a query final e os parâmetros (para debug)
         console.log("SQL:", sql);
         console.log("Params:", params);
 
+        // Retorna os pedidos como JSON na resposta da API
         return res.status(200).json(pedidosComISO);
     } catch (error) {
+        // Se der erro, passa para o middleware de tratamento de erros
         next(error);
     }
 };
+
 
 
 exports.getOrderById = async (req, res, next) => {
@@ -131,9 +152,9 @@ exports.getOrderById = async (req, res, next) => {
 
         // transforma data do pedido para ISO
         const pedidoComISO = {
-        ...pedido,
-        data_criacao: pedido.data_criacao ? new Date(pedido.data_criacao).toISOString() : null,
-        itens 
+            ...pedido,
+            data_criacao: pedido.data_criacao ? new Date(pedido.data_criacao).toISOString() : null,
+            itens
         };
 
         // monta resposta

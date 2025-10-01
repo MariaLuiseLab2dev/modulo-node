@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,29 @@
     <script defer src="script/storedev.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    <main>
+    <header>
         <h1>StoreDev</h1>
         <p>Encontre os melhores produtos</p>
+
+        <!-- Barra de pesquisa -->
+        <form id="formBusca">
+            <input type="search" id="campoBusca" placeholder="Buscar produtos..." aria-label="Buscar produtos">
+            <button type="submit">buscar</button>
+        </form>
+    </header>
+
+    <main>
+        <!-- Seção onde os produtos serão renderizados dinamicamente -->
+        <section id="produtos">
+            <h2></h2> <!-- tem que vim o nome do banco-->
+            <h4></h4> <!-- qtde de itens -->
+            <div id="listaProdutos">
+                <!-- cards -->
+            </div>
+        </section>
     </main>
 </body>
+
 </html>
