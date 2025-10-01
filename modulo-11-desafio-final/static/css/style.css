@@ -9,7 +9,6 @@
     font-family: 'Montserrat';
     src: url("fonts/Montserrat-Bold.ttf");
     font-weight: 700;
-    /* bold */
     font-style: normal;
 }
 
@@ -52,7 +51,7 @@ a {
 }
 
 nav {
-    background-color: #e9e5da; 
+    background-color: #F8F6F9; 
     border-radius: 4rem;       
     margin: 2rem;      
     padding: 0.2rem;        
@@ -95,7 +94,68 @@ section {
     padding: 1rem;
 }
 
-/* Mostra só a seção ativa */
+
 section.active {
     display: block;
 }
+
+/*CONTAINER DO SWITCH*/
+.switch {
+    position: relative;      /* Define que os elementos filhos (.slider) podem ser posicionados em relação a este container */
+    display: inline-block;   /* Faz o container se comportar como um bloco, mas que pode ficar na mesma linha */
+    width: 50px;             /* Largura total do switch (trilho) */
+    height: 25px;            /* Altura total do switch */
+    margin: 0 0.5rem;        /* Espaço horizontal de 0.5rem dos lados */
+}
+
+/* ESCONDE O CHECKBOX PADRÃO */
+.switch input {
+    opacity: 0;   /* Deixa o checkbox invisível */
+    width: 0;     /* Remove a largura */
+    height: 0;    /* Remove a altura */
+}
+/* O input continua existindo e funcionando, mas fica invisível.
+   O visual do switch será desenhado pelo .slider. */
+
+/* TRILHO DO SWITCH */
+.slider {
+    position: absolute;      /* Ocupa toda a área do container .switch */
+    cursor: pointer;         /* Mostra a mãozinha ao passar o mouse */
+    top: 0; left: 0; right: 0; bottom: 0; /* Estica o elemento para preencher o container */
+    background-color: #ccc;  /* Cor cinza do trilho quando desligado */
+    transition: .4s;         /* Suaviza a animação de cor e movimento */
+    border-radius: 26px;     /* Deixa o trilho arredondado (formato de pílula) */
+}
+
+/* BOLINHA DO SWITCH */
+.slider:before {
+    position: absolute;      /* Posiciona a bolinha dentro do trilho */
+    content: "";             /* Cria um pseudo-elemento vazio (a bolinha) */
+    height: 20px;            /* Altura da bolinha */
+    width: 20px;             /* Largura da bolinha */
+    left: 3px;               /* Distância da borda esquerda do trilho */
+    bottom: 3px;             /* Distância da borda inferior do trilho */
+    background-color: white; /* Cor da bolinha */
+    transition: .4s;         /* Animação suave ao deslizar */
+    border-radius: 50%;      /* Deixa a bolinha redonda */
+}
+
+/* ESTADO "LIGADO"*/ 
+/* Quando o input (checkbox) está marcado (:checked),
+   o seletor + pega o .slider que vem logo depois dele */
+.switch input:checked + .slider {
+    background-color: #6C3082; /* Trilho fica roxo quando ligado */
+}
+
+/* Quando o input está marcado, move a bolinha para a direita */
+.switch input:checked + .slider:before {
+    transform: translateX(24px); /* Desloca a bolinha 24px para a direita */
+}
+
+#filtrosPedidos {
+  display: none;
+}
+#filtrosPedidos.ativo {
+  display: block;
+}
+

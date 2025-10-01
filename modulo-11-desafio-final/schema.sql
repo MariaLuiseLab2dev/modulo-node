@@ -19,9 +19,10 @@ CREATE TABLE produtos (
 
 CREATE TABLE pedidos (
     id_pedido       INTEGER     PRIMARY KEY AUTOINCREMENT,
-    data_criacao    DATE        DEFAULT (date('now')),
+    data_criacao    DATE        DEFAULT (datetime('now')),
     valor_total     REAL        NOT NULL
 );
+drop table pedidos;
 
 CREATE TABLE itens_pedido (
     id_item     INTEGER     PRIMARY KEY AUTOINCREMENT,
@@ -36,8 +37,10 @@ CREATE TABLE itens_pedido (
 
 CREATE TABLE carrinhos (
     id_carrinho INTEGER PRIMARY KEY AUTOINCREMENT,
-    data_criacao DATE DEFAULT (date('now'))
+    data_criacao DATE DEFAULT (datetime('now'))
 );
+
+drop table carrinhos;
 
 CREATE TABLE itens_carrinho (
     id_item     INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -141,4 +144,27 @@ JOIN itens_pedido ip
 ON p.id_pedido = ip.id_pedido
 ORDER BY p.id_pedido ASC;
 
-SELECT * FROM itens_pedido;
+SELECT * FROM pedidos;
+
+SELECT 
+    p.id_pedido,
+    p.data_criacao,
+    p.valor_total,
+    i.id_item,
+    i.quantidade,
+    i.preco_unitario,
+    i.subtotal,
+    pr.id_produto,
+    pr.nome AS nome_produto,
+    pr.descricao,
+    pr.preco
+FROM pedidos p
+JOIN itens_pedido i ON p.id_pedido = i.id_pedido
+JOIN produtos pr ON i.id_produto = pr.id_produto
+WHERE p.id_pedido = 1;
+
+PRAGMA table_info(pedidos);
+
+SELECT id_pedido, valor_total
+FROM pedidos
+WHERE valor_total >= 100;

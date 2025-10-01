@@ -40,19 +40,4 @@ function allQuery(sql, params = []) {
     });
 }
 
-
-exports.getTaskById = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const sql = `SELECT * FROM tarefas WHERE id =?`;
-        const tarefa = await getQuery(sql, [id]);
-        if (!tarefa) {
-            return res.status(404).json({ error: 'Tarefa não encontrada.' });
-        }
-        res.status(200).json(tarefa);
-    } catch (error) {
-        next(error);
-    }
-};
-
 module.exports = { runQuery, getQuery, allQuery }

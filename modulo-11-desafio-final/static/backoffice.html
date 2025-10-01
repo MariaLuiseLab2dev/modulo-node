@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,10 @@
     <script defer src="script/backoffice.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    <header> 
-    <h1>Sistema de Gestão</h1>
+    <header>
+        <h1>Sistema de Gestão</h1>
         <nav>
             <ul>
                 <li><a href="#categorias" class="active">Categorias</a></li>
@@ -23,63 +25,172 @@
         <div>
             <h3>Categorias</h3>
             <button id="novaCategoria">+ Nova Categoria</button>
+
+            <!-- único dialog usado para criar/editar categoria -->
+            <dialog id="dialogCategoria">
+                <form id="formCategoria" method="dialog">
+                    <h4>Nova Categoria</h4>
+
+                    <!-- Campo Nome -->
+                    <label for="nomeCategoria">Nome:</label>
+                    <input type="text" id="nomeCategoria" name="nome" placeholder="Digite o nome da categoria" required>
+
+                    <!-- Campo Status -->
+                    <div class="status-group">
+                        <label>Status:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="statusCategoria" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span id="statusLabel">Visível</span>
+                    </div>
+
+                    <button type="reset" id="cancelarCategoria">Cancelar</button>
+                    <button type="submit">Criar Categoria</button>
+                </form>
+            </dialog>
+
             <table id="tabelaCategorias">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
                 </thead>
-                <tbody>
-                
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </section>
+
     <section id="produtos">
         <div>
             <h3>Produtos</h3>
             <button id="novoProduto">+ Novo Produto</button>
+
+            <dialog id="dialogProduto">
+                <form id="formProduto" method="dialog">
+                    <h4>Novo Produto</h4>
+
+                    <!-- Campo nome -->
+                    <label for="nomeProduto">Nome:</label>
+                    <input type="text" id="nomeProduto" name="nome" placeholder="Digite o nome do produto" required>
+
+                    <!-- Campo descrição -->
+                    <label for="descricaoProduto">Descrição:</label>
+                    <textarea id="descricaoProduto" name="descricao" placeholder="Digite a descrição do produto"
+                        required></textarea>
+
+                    <!-- Campo categoria (select) -->
+                    <label for="categoriaProduto">Categoria:</label>
+                    <select id="categoriaProduto" name="id_categoria" required></select>
+
+                    <!-- Campo preço -->
+                    <label for="precoProduto">Preço:</label>
+                    <input type="text" id="precoProduto" name="preco" min="0" step="0.01" required>
+
+                    <!-- Campo estoque -->
+                    <label for="estoqueProduto">Estoque:</label>
+                    <input type="number" id="estoqueProduto" name="estoque" min="0" required>
+
+                    <!-- Toggle de status -->
+                    <div class="status-group">
+                        <label>Status:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="statusProduto" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span id="statusProdutoLabel">Visível</span>
+                    </div>
+
+                    <!-- Botões -->
+                    <button type="reset" id="cancelarProduto">Cancelar</button>
+                    <button type="submit">Criar Produto</button>
+                </form>
+            </dialog>
+
             <table id="tabelaProdutos">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Categoria</th>
-                    <th>Preço</th>
-                    <th>Estoque</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
                 </thead>
-                <tbody>
-                
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </section>
+
     <section id="pedidos">
         <div>
             <h3>Pedidos</h3>
-            <button id="Filtros">Filtros</button>
+            <button id="btnToggleFiltros">Filtros</button>
+
+            <!-- filtros ficam fora do dialog -->
+            <div id="filtrosPedidos" style="display: none;">
+                <label>Data inicial:
+                    <input type="date" id="filtroDataInicial">
+                </label>
+                <label>Data final:
+                    <input type="date" id="filtroDataFinal">
+                </label>
+                <label>Valor mín:
+                    <input type="number" step="0.01" id="filtroValorMin">
+                </label>
+                <label>Valor máx:
+                    <input type="number" step="0.01" id="filtroValorMax">
+                </label>
+
+                <button id="btnLimparFiltros">Limpar filtros</button>
+                <button id="btnFiltrarPedidos">Filtrar</button>
+            </div>
+
+            <dialog id="dialogPedido">
+                <div>
+                    <h4>Detalhes do Pedido</h4>
+                    <p><strong>ID:</strong> <span id="pedidoId"></span></p>
+                    <p><strong>Data:</strong> <span id="pedidoData"></span></p>
+                    <p><strong>Valor Total:</strong><span id="pedidoValor"></span></p>
+
+                    <h5>Itens</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Descrição</th>
+                                <th>Qtd de Itens</th>
+                                <th>Preço Unitário</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pedidoItens"></tbody>
+                    </table>
+
+                    <button id="fecharPedido">Fechar</button>
+                </div>
+            </dialog>
+
             <table id="tabelaPedidos">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>Qtde Itens</th>
-                    <th>Valor Total</th>
-                    <th>Detalhes</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Qtde Itens</th>
+                        <th>Valor Total</th>
+                        <th>Detalhes</th>
+                    </tr>
                 </thead>
-                <tbody>
-                
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </section>
 </body>
+
 </html>

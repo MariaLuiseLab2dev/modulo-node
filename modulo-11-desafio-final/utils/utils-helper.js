@@ -84,10 +84,10 @@ async function checaDuplicidade(tabela, nomeNormalizado, id = null) {
 }
 
 
-async function validaIdCategoria(idParam, tabela, idColumn) {
+async function validaIdCategoria(idParam) {
     const id = await validaNumero(idParam);
 
-    const sql = `SELECT 1 FROM ${tabela} WHERE id_${idColumn} = ?`;
+    const sql = `SELECT 1 FROM categorias WHERE id_categoria = ?`;
     const row = await getQuery(sql, [id]);
     if (!row) {
         throw new NotFoundError(`Categoria ${id}`);
