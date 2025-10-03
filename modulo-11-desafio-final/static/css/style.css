@@ -1,161 +1,591 @@
 @font-face {
+    /* Declaração de fonte personalizada */
     font-family: 'Montserrat';
+    /* Nome da fonte */
     src: url("fonts/Montserrat-Regular.ttf");
+    /* Caminho do arquivo da fonte regular */
     font-weight: 400;
+    /* Peso normal */
     font-style: normal;
+    /* Estilo normal */
 }
 
 @font-face {
+    /* Segunda variação da fonte */
     font-family: 'Montserrat';
+    /* Mesmo nome da família */
     src: url("fonts/Montserrat-Bold.ttf");
+    /* Caminho do arquivo bold */
     font-weight: 700;
+    /* Peso negrito */
     font-style: normal;
+    /* Estilo normal */
 }
 
 * {
+    /* Reset básico */
     font-family: 'Montserrat', sans-serif;
+    /* Fonte padrão */
     box-sizing: border-box;
+    /* Inclui borda e padding no cálculo */
     margin: 0;
+    /* Remove margens padrão */
     padding: 0;
+    /* Remove paddings padrão */
 }
 
 ul {
+    /* Estilo das listas */
     list-style: none;
+    /* Remove bolinhas */
     display: flex;
+    /* Flexbox */
     gap: 1rem;
+    /* Espaço entre itens */
 }
 
 h1 {
+    margin: 10px 20px;
     font-weight: 700;
-    padding: 1rem;
-    color: #6C3082;
-    margin-bottom: 1rem;
+    /* Negrito */
+    color: #712782;
+    /* Cor roxa */
 }
 
-h3 {
-    color: #6C3082;
-    margin-bottom: 1rem;
+h3,
+h4 {
+    /* Cabeçalhos */
+    font-weight: 700;
+    /* Negrito */
+    color: #712782;
+    /* Cor roxa */
 }
 
-a { 
+a {
+    /* Links */
     text-decoration: none;
-    color: #000;
+    /* Remove sublinhado */
+    color: #1A1A1A;
+    /* Preto */
 }
 
 .header {
+    /* Container do header */
     display: flex;
+    /* Flexbox */
     align-items: center;
+    /* Centraliza verticalmente */
     gap: 28px;
-    max-width: 800px;
+    /* Espaço entre elementos */
+    max-width: 600px;
+    /* Largura máxima */
     margin: 0 auto;
+    /* Centraliza na tela */
 }
 
 nav {
-    background-color: #F8F6F9; 
-    border-radius: 4rem;       
-    margin: 2rem;      
-    padding: 0.2rem;        
+    /* Barra de navegação */
+    background-color: #F8F6F9;
+    /* Fundo */
+    border-radius: 4rem;
+    /* Bordas arredondadas */
+    margin: 2rem;
+    /* Espaço externo */
+    padding: 0.2rem;
+    /* Espaço interno */
     display: flex;
-    justify-content: space-between; 
+    /* Flexbox */
+    justify-content: space-between;
+    /* Espaço entre elementos */
     align-items: center;
-    min-width: 650px;        
+    /* Alinhamento vertical */
+    min-width: 650px;
+    /* Largura mínima */
 }
 
 ul {
+    /* Listas dentro do nav */
     list-style: none;
+    /* Sem marcadores */
     display: flex;
+    /* Flexbox */
     width: 100%;
+    /* Ocupa toda a largura */
     padding: 0;
+    /* Sem padding */
     margin: 0;
+    /* Sem margin */
 }
 
 li {
-    flex: 1; 
+    /* Itens da lista */
+    flex: 1;
+    /* Divide espaço igualmente */
     text-align: center;
+    /* Texto centralizado */
 }
 
 li a {
+    /* Links dentro da lista */
     display: block;
+    /* Ocupa todo espaço do li */
     padding: 0.3rem 1rem;
+    /* Espaço interno */
     border-radius: 0.5rem;
+    /* Bordas arredondadas */
     text-decoration: none;
-    color: #000;
+    /* Sem sublinhado */
+    color: #1A1A1A;
+    /* Preto */
     font-size: 0.9rem;
+    /* Fonte menor */
 }
 
 li a.active {
-    background-color: #ffffff;
+    /* Link ativo */
+    background-color: #FFFFFF;
+    /* Fundo branco */
     border-radius: 2rem;
+    /* Bordas bem arredondadas */
 }
 
-/* Esconde todas as seções */
 section {
+    /* Seções escondidas */
     display: none;
-    padding: 1rem;
+    /* Oculta por padrão */
+    padding: 0.8px;
+    /* Espaço interno */
+    margin: 0 60px;
 }
-
 
 section.active {
+    /* Seção ativa */
     display: block;
+    /* Exibida */
 }
 
-/*CONTAINER DO SWITCH*/
 .switch {
-    position: relative;      /* Define que os elementos filhos (.slider) podem ser posicionados em relação a este container */
-    display: inline-block;   /* Faz o container se comportar como um bloco, mas que pode ficar na mesma linha */
-    width: 50px;             /* Largura total do switch (trilho) */
-    height: 25px;            /* Altura total do switch */
-    margin: 0 0.5rem;        /* Espaço horizontal de 0.5rem dos lados */
+    /* Container do switch */
+    position: relative;
+    /* Posição para o slider */
+    display: inline-block;
+    /* Bloco em linha */
+    width: 50px;
+    /* Largura do trilho */
+    height: 25px;
+    /* Altura do trilho */
+    margin: 0 0.5rem;
+    /* Espaço lateral */
 }
 
-/* ESCONDE O CHECKBOX PADRÃO */
 .switch input {
-    opacity: 0;   /* Deixa o checkbox invisível */
-    width: 0;     /* Remove a largura */
-    height: 0;    /* Remove a altura */
+    /* Esconde o checkbox padrão */
+    opacity: 0;
+    /* Invisível */
+    width: 0;
+    /* Sem largura */
+    height: 0;
+    /* Sem altura */
 }
-/* O input continua existindo e funcionando, mas fica invisível.
-   O visual do switch será desenhado pelo .slider. */
 
-/* TRILHO DO SWITCH */
 .slider {
-    position: absolute;      /* Ocupa toda a área do container .switch */
-    cursor: pointer;         /* Mostra a mãozinha ao passar o mouse */
-    top: 0; left: 0; right: 0; bottom: 0; /* Estica o elemento para preencher o container */
-    background-color: #ccc;  /* Cor cinza do trilho quando desligado */
-    transition: .4s;         /* Suaviza a animação de cor e movimento */
-    border-radius: 26px;     /* Deixa o trilho arredondado (formato de pílula) */
+    /* Trilho do switch */
+    position: absolute;
+    /* Ocupa todo espaço do container */
+    cursor: pointer;
+    /* Mãozinha no hover */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Preenche container */
+    background-color: #F8F6F9;
+    /* Cinza desligado */
+    transition: .4s;
+    /* Animação suave */
+    border-radius: 26px;
+    /* Bordas arredondadas */
 }
 
-/* BOLINHA DO SWITCH */
 .slider:before {
-    position: absolute;      /* Posiciona a bolinha dentro do trilho */
-    content: "";             /* Cria um pseudo-elemento vazio (a bolinha) */
-    height: 20px;            /* Altura da bolinha */
-    width: 20px;             /* Largura da bolinha */
-    left: 3px;               /* Distância da borda esquerda do trilho */
-    bottom: 3px;             /* Distância da borda inferior do trilho */
-    background-color: white; /* Cor da bolinha */
-    transition: .4s;         /* Animação suave ao deslizar */
-    border-radius: 50%;      /* Deixa a bolinha redonda */
+    /* Bolinha do switch */
+    position: absolute;
+    /* Dentro do trilho */
+    content: "";
+    /* Pseudo-elemento */
+    height: 20px;
+    width: 20px;
+    /* Tamanho */
+    left: 3px;
+    bottom: 3px;
+    /* Posição inicial */
+    background-color: white;
+    /* Cor */
+    transition: .4s;
+    /* Animação */
+    border-radius: 50%;
+    /* Redonda */
 }
 
-/* ESTADO "LIGADO"*/ 
-/* Quando o input (checkbox) está marcado (:checked),
-   o seletor + pega o .slider que vem logo depois dele */
-.switch input:checked + .slider {
-    background-color: #6C3082; /* Trilho fica roxo quando ligado */
+.switch input:checked+.slider {
+    /* Trilho ligado */
+    background-color: #712782;
+    /* Roxo */
 }
 
-/* Quando o input está marcado, move a bolinha para a direita */
-.switch input:checked + .slider:before {
-    transform: translateX(24px); /* Desloca a bolinha 24px para a direita */
+.switch input:checked+.slider:before {
+    /* Bolinha ligada */
+    transform: translateX(24px);
+    /* Move p/ direita */
 }
 
 #filtrosPedidos {
-  display: none;
-}
-#filtrosPedidos.ativo {
-  display: block;
+    /* Filtros pedidos */
+    display: none;
+    /* Escondidos */
 }
 
+#filtrosPedidos.ativo {
+    /* Quando ativo */
+    display: block;
+    /* Mostrados */
+}
+
+label {
+    /* Labels */
+    font-weight: 500;
+    /* Seminegrito */
+    font-size: 0.8rem;
+}
+
+.btnFiltrar {
+    height: 36px;
+    background-color: #712782;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    /* Fonte média */
+    font-weight: 500;
+    /* Seminegrito */
+    border-radius: 0.5rem;
+    /* Arredondado */
+    color: #FFFFFF;
+    font-weight: 500;
+    border: 0;
+
+}
+
+.filtro-actions {
+    display: flex;
+    justify-content: right;
+    gap: 20px;
+    align-items: flex-end;
+    margin: 15px;
+}
+
+.inputFiltro {
+    border-radius: 8px;
+    height: 36px;
+    padding: 8px;
+    border: 1px solid #E5E1E6;
+    font-size: 0.8rem;
+}
+
+.filtros-horizontal {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    /* espaço entre os blocos */
+}
+
+.filtro-item {
+    display: flex;
+    flex-direction: column;
+    /* label em cima e input embaixo*/
+    min-width: 273px;
+    /* largura mínima de cada input */
+}
+
+.filtro-item label {
+    margin: 8px 2px;
+    /* espaço entre label e input */
+    font-size: 0.8rem;
+    color: #1A1A1A;
+    font-weight: 500;
+}
+
+.btnNovaCategoria,
+.btnNovoProduto {
+    /* Botão Nova Categoria */
+    padding: 8px 12px;
+    /* Espaço interno */
+    font-size: 0.9rem;
+    /* Fonte média */
+    font-weight: 500;
+    /* Seminegrito */
+    border: none;
+    /* Sem borda */
+    border-radius: 0.5rem;
+    /* Arredondado */
+    background-color: #712782;
+    color: white;
+    /* Texto branco */
+    cursor: pointer;
+    /* Cursor de clique */
+    height: 36px;
+}
+
+.btnFiltros {
+    padding: 8px 12.8px;
+    /* Espaço interno */
+    font-size: 0.9rem;
+    /* Fonte média */
+    font-weight: 500;
+    /* Seminegrito */
+    border: 1px solid #E5E1E6;
+    border-radius: 0.5rem;
+    /* Arredondado */
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    /* Texto preto */
+    cursor: pointer;
+    /* Cursor de clique */
+    height: 36px;
+}
+
+table {
+    /* Tabela */
+    width: 100%;
+    /* Largura total */
+    border-collapse: collapse;
+    /* Junta bordas */
+    font-size: 0.8rem;
+}
+
+th {
+    /* Células */
+    padding: 9.75px 8px 10.25px 8px;
+    /* Espaçamento interno */
+    border-bottom: 0.8px solid #E5E1E6;
+    /* Linha separadora */
+    text-align: center;
+    /* Texto à esquerda */
+}
+
+td {
+    padding: 14.5px 8px;
+    text-align: center;
+    border-bottom: 0.8px solid #E5E1E6;
+    /* Linha separadora */
+}
+
+thead th {
+    /* Cabeçalho da tabela */
+    font-weight: 700;
+    /* Negrito */
+    padding: 9.75px 8px 10.25px 8px;
+    color: #1A1A1A;
+    border-bottom: 0.8px solid #E5E1E6;
+    /* Linha inferior */
+}
+
+tbody tr:last-child td {
+    /* Última linha */
+    border-bottom: none;
+    /* Remove borda */
+}
+
+.table-wrapper {
+    /* Container da tabela */
+    background-color: white;
+    /* Fundo branco */
+    border-radius: 1rem;
+    /* Bordas arredondadas */
+    padding: 1rem;
+    /* Espaço interno */
+    border: 1px solid #E5E1E6;
+    /* Borda cinza */
+    margin-top: 24px;
+    /* Espaço superior */
+}
+
+.cabecalho {
+    /* Cabeçalho de categorias, produtos e pedidos */
+    display: flex;
+    /* Flexbox */
+    justify-content: space-between;
+    /* Espaço entre itens */
+    align-items: center;
+    /* Centraliza verticalmente */
+    margin-bottom: 24px;
+    /* Espaço inferior */
+}
+
+table .statusVis {
+    color: #016630;
+    background-color: #DCFCE7;
+    padding: 3px 9px;
+    border-radius: 6px;
+}
+
+table .statusInv {
+    color: #9F0712;
+    background-color: #FFE2E2;
+    padding: 3px 9px;
+    border-radius: 6px;
+}
+
+.statusVis,
+.statusInv {
+    font-size: 0.8rem;
+    /* mesmo tamanho do label */
+    line-height: 1;
+    /* evita desalinhamentos verticais */
+    display: inline-flex;
+    /* garante comportamento previsível com padding */
+    align-items: center;
+    justify-content: center;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-weight: 500;
+    /* mesma "espessura" do label */
+}
+
+dialog.dialogDiv {
+    position: fixed;
+    /* fixa na viewport */
+    top: 50%;
+    /* ponto de referência vertical */
+    left: 50%;
+    /* ponto de referência horizontal */
+    transform: translate(-50%, -50%);
+    /* centraliza perfeitamente */
+    z-index: 1000;
+    /* fica sobre o resto da UI */
+}
+
+.dialogDiv {
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    width: 100%;
+    max-width: 512px;
+    padding: 0;
+    color: #1A1A1A;
+}
+
+.dialogContent {
+    position: relative;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.dialogTitle {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #0f0f0f;
+    font-weight: 700;
+}
+
+/* form layout */
+.dialogForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* campos */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #222;
+}
+
+
+input,
+.field input,
+.field textarea,
+.field select {
+    border: 1px solid #E5E1E6;
+    border-radius: 8px;
+    padding: 10px 12px;
+    height: 36px;
+    font-size: 0.95rem;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+/* textarea maior */
+.field textarea {
+    min-height: 96px;
+    resize: vertical;
+    height: auto;
+}
+
+/* status group */
+.status-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btnEditar, .btnDetalhes { 
+    background-color: transparent; 
+    border: 0px; 
+} 
+.btnEditar img, .btnDetalhes img { 
+    width: 24px; 
+    height: 24px; 
+    display: block; 
+    cursor: pointer; 
+}
+
+.btnFechar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: 0px;
+    background: transparent;
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+/* botões do dialog */
+.dialogButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.btnSend {
+    background: #712782;
+    color: #FFFFFF;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 36;
+}
+
+.dialogButtons .btnSend {
+    flex: 1;
+    /* ocupa o espaço disponível */
+    height: 36px;
+}

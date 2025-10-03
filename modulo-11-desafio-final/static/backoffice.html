@@ -22,32 +22,42 @@
     </header>
 
     <section id="categorias">
-        <div>
-            <h3>Categorias</h3>
-            <button id="novaCategoria">+ Nova Categoria</button>
-
+        <div class="table-wrapper">
+            <div class="cabecalho">
+                <h3>Categorias</h3>
+                <button id="novaCategoria" class="btnNovaCategoria">+ Nova Categoria</button>
+            </div>
             <!-- único dialog usado para criar/editar categoria -->
-            <dialog id="dialogCategoria">
-                <form id="formCategoria" method="dialog">
-                    <h4>Nova Categoria</h4>
+            <dialog id="dialogCategoria" class="dialogDiv">
+                <div class="dialogContent">
+                    <button type="button" class="btnFechar" id="cancelarCategoria"><img src="img/btnFechar.svg"
+                            alt="Fechar"></button>
 
-                    <!-- Campo Nome -->
-                    <label for="nomeCategoria">Nome:</label>
-                    <input type="text" id="nomeCategoria" name="nome" placeholder="Digite o nome da categoria" required>
+                    <h4 class="dialogTitle">Nova Categoria</h4>
 
-                    <!-- Campo Status -->
-                    <div class="status-group">
-                        <label>Status:</label>
-                        <label class="switch">
-                            <input type="checkbox" id="statusCategoria" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span id="statusLabel">Visível</span>
-                    </div>
+                    <form id="formCategoria" class="dialogForm" method="dialog">
+                        <div class="field">
+                            <label for="nomeCategoria">Nome</label>
+                            <input type="text" id="nomeCategoria" name="nome" placeholder="Digite o nome da categoria"
+                                required>
+                        </div>
 
-                    <button type="reset" id="cancelarCategoria">Cancelar</button>
-                    <button type="submit">Criar Categoria</button>
-                </form>
+                        <div class="status-group">
+                            <label>Status</label>
+                            <div class="status-controls">
+                                <span id="statusLabel" class="statusVis">Visível</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="statusCategoria" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="dialogButtons">
+                            <button type="submit" class="btnSend">Criar Categoria</button>
+                        </div>
+                    </form>
+                </div>
             </dialog>
 
             <table id="tabelaCategorias">
@@ -65,50 +75,72 @@
     </section>
 
     <section id="produtos">
-        <div>
-            <h3>Produtos</h3>
-            <button id="novoProduto">+ Novo Produto</button>
+        <div class="table-wrapper">
+            <div class="cabecalho">
+                <h3>Produtos</h3>
+                <button id="novoProduto" class="btnNovoProduto">+ Novo Produto</button>
+            </div>
 
-            <dialog id="dialogProduto">
-                <form id="formProduto" method="dialog">
-                    <h4>Novo Produto</h4>
+            <dialog id="dialogProduto" class="dialogDiv">
+                <div class="dialogContent">
+                    <button type="button" class="btnFechar" id="cancelarProduto"><img src="img/btnFechar.svg" alt="Fechar"></button>
 
-                    <!-- Campo nome -->
-                    <label for="nomeProduto">Nome:</label>
-                    <input type="text" id="nomeProduto" name="nome" placeholder="Digite o nome do produto" required>
+                    <h4 class="dialogTitle">Novo Produto</h4>
 
-                    <!-- Campo descrição -->
-                    <label for="descricaoProduto">Descrição:</label>
-                    <textarea id="descricaoProduto" name="descricao" placeholder="Digite a descrição do produto"
-                        required></textarea>
+                    <form id="formProduto" class="dialogForm" method="dialog">
+                        <!-- Campo nome -->
+                        <div class="field">
+                            <label for="nomeProduto">Nome</label>
+                            <input type="text" id="nomeProduto" name="nome" placeholder="Digite o nome do produto"
+                                required>
+                        </div>
 
-                    <!-- Campo categoria (select) -->
-                    <label for="categoriaProduto">Categoria:</label>
-                    <select id="categoriaProduto" name="id_categoria" required></select>
+                        <!-- Campo descrição -->
+                        <div class="field">
+                            <label for="descricaoProduto">Descrição</label>
+                            <textarea id="descricaoProduto" name="descricao" placeholder="Digite a descrição do produto"
+                                required></textarea>
+                        </div>
 
-                    <!-- Campo preço -->
-                    <label for="precoProduto">Preço:</label>
-                    <input type="text" id="precoProduto" name="preco" min="0" step="0.01" required>
+                        <!-- Campo categoria (select) -->
+                        <div class="field">
+                            <label for="categoriaProduto">Categoria</label>
+                            <select id="categoriaProduto" name="id_categoria" required></select>
+                        </div>
 
-                    <!-- Campo estoque -->
-                    <label for="estoqueProduto">Estoque:</label>
-                    <input type="number" id="estoqueProduto" name="estoque" min="0" required>
+                        <!-- Campo preço -->
+                        <div class="field">
+                            <label for="precoProduto">Preço</label>
+                            <input type="text" id="precoProduto" name="preco" min="0" step="0.01" required>
+                        </div>
 
-                    <!-- Toggle de status -->
-                    <div class="status-group">
-                        <label>Status:</label>
-                        <label class="switch">
-                            <input type="checkbox" id="statusProduto" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span id="statusProdutoLabel">Visível</span>
-                    </div>
+                        <!-- Campo estoque -->
+                        <div class="field">
+                            <label for="estoqueProduto">Estoque</label>
+                            <input type="number" id="estoqueProduto" name="estoque" min="0" required>
+                        </div>
 
-                    <!-- Botões -->
-                    <button type="reset" id="cancelarProduto">Cancelar</button>
-                    <button type="submit">Criar Produto</button>
-                </form>
+                        <!-- Toggle de status -->
+                        <div class="status-group">
+                            <label>Status</label>
+                            <div class="status-controls">
+                                <span id="statusProdutoLabel" class="statusVis">Visível</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="statusProduto" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="dialogButtons">
+                            <button type="reset" id="cancelarProdutoReset" class="btnFiltros">Cancelar</button>
+                            <button type="submit" class="btnSend">Criar Produto</button>
+                        </div>
+                    </form>
+                </div>
             </dialog>
+
 
             <table id="tabelaProdutos">
                 <thead>
@@ -129,32 +161,46 @@
     </section>
 
     <section id="pedidos">
-        <div>
-            <h3>Pedidos</h3>
-            <button id="btnToggleFiltros">Filtros</button>
+        <div class="table-wrapper">
+            <div class="cabecalho">
+                <h3>Pedidos</h3>
+                <button id="btnToggleFiltros" class="btnFiltros"><img src="img/btnFiltros.svg"> Filtros</button>
+            </div>
 
-            <!-- filtros ficam fora do dialog -->
-            <div id="filtrosPedidos" style="display: none;">
-                <label>Data inicial:
-                    <input type="date" id="filtroDataInicial">
-                </label>
-                <label>Data final:
-                    <input type="date" id="filtroDataFinal">
-                </label>
-                <label>Valor mín:
-                    <input type="text" step="0.01" id="filtroValorMin">
-                </label>
-                <label>Valor máx:
-                    <input type="text" step="0.01" id="filtroValorMax">
-                </label>
+            <!-- filtros  -->
+            <div id="filtrosPedidos" class="table-wrapper" style="display: none;">
+                <h4>Filtros</h4>
+                <div class="filtros-horizontal">
+                    <div class="filtro-item">
+                        <label for="filtroDataInicial">Data inicial</label>
+                        <input type="date" id="filtroDataInicial">
+                    </div>
 
-                <button id="btnLimparFiltros">Limpar filtros</button>
-                <button id="btnFiltrarPedidos">Filtrar</button>
+                    <div class="filtro-item">
+                        <label for="filtroDataFinal">Data final</label>
+                        <input type="date" id="filtroDataFinal">
+                    </div>
+
+                    <div class="filtro-item">
+                        <label for="filtroValorMin">Valor mín</label>
+                        <input type="text" id="filtroValorMin" placeholder="R$00,00">
+                    </div>
+
+                    <div class="filtro-item">
+                        <label for="filtroValorMax">Valor máx</label>
+                        <input type="text" id="filtroValorMax" placeholder="R$00,00">
+                    </div>
+                </div>
+
+                <div class="filtro-actions">
+                    <button id="btnLimparFiltros" class="btnFiltros">Limpar Filtros</button>
+                    <button id="btnFiltrarPedidos" class="btnFiltrar">Filtrar</button>
+                </div>
             </div>
 
             <dialog id="dialogPedido">
-                <div>
-                    <h4>Detalhes do Pedido</h4>
+                <div class="dialogDiv">
+                    <h4>Pedido</h4>
                     <p><strong>ID:</strong> <span id="pedidoId"></span></p>
                     <p><strong>Data:</strong> <span id="pedidoData"></span></p>
                     <p><strong>Valor Total:</strong><span id="pedidoValor"></span></p>
@@ -173,7 +219,9 @@
                         <tbody id="pedidoItens"></tbody>
                     </table>
 
-                    <button id="fecharPedido">Fechar</button>
+                    <div>
+                        <button id="fecharPedido">Fechar</button>
+                    </div>
                 </div>
             </dialog>
 

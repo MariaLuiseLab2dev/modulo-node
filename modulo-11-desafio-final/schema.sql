@@ -22,7 +22,8 @@ CREATE TABLE pedidos (
     data_criacao    DATE        DEFAULT (datetime('now')),
     valor_total     REAL        NOT NULL
 );
-drop table pedidos;
+
+select * FROM pedidos;
 
 CREATE TABLE itens_pedido (
     id_item     INTEGER     PRIMARY KEY AUTOINCREMENT,

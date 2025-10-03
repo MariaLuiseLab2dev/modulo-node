@@ -63,6 +63,20 @@ function aplicarMascaraMoeda(input) {
     });
 }
 
+const formatarDataHorario = (formatoIso) => {
+    if (formatoIso == null || formatoIso === "") return "";
+
+    const data = new Date(formatoIso);
+    return new Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+    }).format(data)
+        .replace(",", "");
+};
 
 /* ===========================
    DOMContentLoaded: listeners
@@ -132,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert(err.error || err.message || "Erro ao criar categoria");
                     return;
                 }
-                
+
             } else {
                 // update
                 const response = await fetch(`http://127.0.0.1:3001/categorias/${editingCategoryId}`, {
@@ -180,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dialogProduto.close();
         resetarDialogProduto();
     });
-    
+
     const inputPreco = document.getElementById("precoProduto");
     aplicarMascaraMoeda(inputPreco);
 
@@ -254,14 +268,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Filtros
     if (btnToggleFiltros && filtrosDiv) {
         btnToggleFiltros.addEventListener("click", () => {
             if (filtrosDiv.style.display === "none" || filtrosDiv.style.display === "") {
                 filtrosDiv.style.display = "block";
-                btnToggleFiltros.textContent = "Esconder filtros";
+                btnToggleFiltros.innerHTML = '<img src="img/btnFiltros.svg"> Filtros';
             } else {
                 filtrosDiv.style.display = "none";
-                btnToggleFiltros.textContent = "Filtros";
+                btnToggleFiltros.innerHTML = '<img src="img/btnFiltros.svg"> Filtros';
             }
         });
     }
@@ -281,12 +296,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnLimparFiltros) {
         btnLimparFiltros.addEventListener("click", () => {
-        document.getElementById("filtroDataInicial").value = "";
-        document.getElementById("filtroDataFinal").value = "";
-        document.getElementById("filtroValorMin").value = "";
-        document.getElementById("filtroValorMax").value = "";
+            document.getElementById("filtroDataInicial").value = "";
+            document.getElementById("filtroDataFinal").value = "";
+            document.getElementById("filtroValorMin").value = "";
+            document.getElementById("filtroValorMax").value = "";
 
-        carregarPedidos(); // volta a carregar todos os pedidos sem filtro
+            carregarPedidos(); // volta a carregar todos os pedidos sem filtro
         });
     }
 });
@@ -305,13 +320,15 @@ async function carregarCategorias() {
 
         categorias.forEach(categoria => {
             const statusTexto = categoria.status === 1 ? "Visível" : "Invisível";
+            const statusClasse = categoria.status === 1 ? "statusVis" : "statusInv";
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
         <td>${categoria.id_categoria}</td>
         <td>${categoria.nome}</td>
-        <td>${statusTexto}</td>
+        <td><span class="${statusClasse}">${statusTexto}</span></td>
         <td>
-          <button class="editarCategoria" data-id="${categoria.id_categoria}">editar</button>
+          <button type="button" class="editarCategoria btnEditar" data-id="${categoria.id_categoria}"><img src="img/btnEditar.svg"></button>
         </td>
       `;
             tbody.appendChild(tr);
@@ -403,7 +420,9 @@ async function carregarProdutos() {
         tbody.innerHTML = "";
 
         produtos.forEach(produto => {
-            const statusTexto = produto.status === 1 ? "Ativo" : "Inativo";
+            const statusTexto = produto.status === 1 ? "Visível" : "Invisível";
+            const statusClasse = produto.status === 1 ? "statusVis" : "statusInv";
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
         <td>${produto.id_produto}</td>
@@ -412,8 +431,8 @@ async function carregarProdutos() {
         <td>${produto.nome_categoria}</td>
         <td>${formatarReal(produto.preco)}</td>
         <td>${produto.estoque}</td>
-        <td>${statusTexto}</td>
-        <td><button class="editarProduto" data-id="${produto.id_produto}">editar</button></td>
+        <td><span class="${statusClasse}">${statusTexto}</span></td>
+        <td><button class="editarProduto btnEditar" data-id="${produto.id_produto}"><img src="img/btnEditar.svg"></button></td>
       `;
             tbody.appendChild(tr);
         });
@@ -488,10 +507,10 @@ async function carregarPedidos() {
             const tr = document.createElement("tr");
             tr.innerHTML = `
             <td>${pedido.id_pedido}</td>
-            <td>${pedido.data_criacao}</td>
+            <td>${String(formatarDataHorario(pedido.data_criacao))}</td>
             <td>${pedido.quantidade}</td>
             <td>${formatarReal(pedido.valor_total)}</td>
-            <td><button class="detalhes" data-id="${pedido.id_pedido}">detalhes</button></td>
+            <td><button class="detalhes btnDetalhes" data-id="${pedido.id_pedido}"><img src="img/btnDetalhes.svg"></button></td>
         `;
             tbody.appendChild(tr);
         });
@@ -574,7 +593,7 @@ async function carregarPedidosComFiltros() {
     const valorMax = document.getElementById("filtroValorMax").value
         .replace(/[R$\s.]/g, "")
         .replace(",", ".");
-    
+
     // Cria um objeto para montar a query string da URL
     const params = new URLSearchParams();
 
