@@ -47,18 +47,18 @@ ul {
 h1 {
     margin: 10px 20px;
     font-weight: 700;
-    /* Negrito */
     color: #712782;
-    /* Cor roxa */
 }
 
 h3,
 h4 {
-    /* Cabeçalhos */
     font-weight: 700;
-    /* Negrito */
     color: #712782;
-    /* Cor roxa */
+}
+
+.dialogDiv h4{
+    font-weight: 700;
+    color: #1A1A1A;
 }
 
 a {
@@ -71,16 +71,11 @@ a {
 
 .header {
     /* Container do header */
-    display: flex;
-    /* Flexbox */
-    align-items: center;
-    /* Centraliza verticalmente */
-    gap: 28px;
-    /* Espaço entre elementos */
-    max-width: 600px;
-    /* Largura máxima */
-    margin: 0 auto;
-    /* Centraliza na tela */
+    display: flex; /* Flexbox */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 28px; /* Espaço entre elementos */
+    max-width: 600px; /* Largura máxima */
+    margin: 0 auto; /* Centraliza na tela */
 }
 
 nav {
@@ -394,18 +389,12 @@ tbody tr:last-child td {
     /* Remove borda */
 }
 
-.table-wrapper {
-    /* Container da tabela */
+.tabelaContainer {
     background-color: white;
-    /* Fundo branco */
-    border-radius: 1rem;
-    /* Bordas arredondadas */
-    padding: 1rem;
-    /* Espaço interno */
+    border-radius:14px;
+    padding: 24px;
     border: 1px solid #E5E1E6;
-    /* Borda cinza */
     margin-top: 24px;
-    /* Espaço superior */
 }
 
 .cabecalho {
@@ -437,30 +426,21 @@ table .statusInv {
 .statusVis,
 .statusInv {
     font-size: 0.8rem;
-    /* mesmo tamanho do label */
     line-height: 1;
-    /* evita desalinhamentos verticais */
     display: inline-flex;
-    /* garante comportamento previsível com padding */
     align-items: center;
     justify-content: center;
     padding: 3px 9px;
     border-radius: 6px;
     font-weight: 500;
-    /* mesma "espessura" do label */
 }
 
 dialog.dialogDiv {
-    position: fixed;
-    /* fixa na viewport */
-    top: 50%;
-    /* ponto de referência vertical */
-    left: 50%;
-    /* ponto de referência horizontal */
-    transform: translate(-50%, -50%);
-    /* centraliza perfeitamente */
-    z-index: 1000;
-    /* fica sobre o resto da UI */
+    position: fixed;/* fixa na viewport */
+    top: 50%;/* ponto de referência vertical */
+    left: 50%;/* ponto de referência horizontal */
+    transform: translate(-50%, -50%);/* centraliza perfeitamente */
+    z-index: 1000; /* fica sobre o resto da tela */
 }
 
 .dialogDiv {
@@ -473,7 +453,7 @@ dialog.dialogDiv {
     color: #1A1A1A;
 }
 
-.dialogContent {
+.dialogConteudo {
     position: relative;
     padding: 22px;
     display: flex;
@@ -481,10 +461,10 @@ dialog.dialogDiv {
     gap: 14px;
 }
 
-.dialogTitle {
+.dialogTitulo {
     margin: 0;
     font-size: 1.25rem;
-    color: #0f0f0f;
+    color: #1A1A1A;
     font-weight: 700;
 }
 
@@ -496,23 +476,23 @@ dialog.dialogDiv {
 }
 
 /* campos */
-.field {
+.dialogCampo {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.field label {
+.dialogCampo label {
     font-size: 0.85rem;
     font-weight: 500;
-    color: #222;
+    color: #1A1A1A;
 }
 
 
 input,
-.field input,
-.field textarea,
-.field select {
+.dialogCampo input,
+.dialogCampo textarea,
+.dialogCampo select {
     border: 1px solid #E5E1E6;
     border-radius: 8px;
     padding: 10px 12px;
@@ -523,10 +503,11 @@ input,
 }
 
 /* textarea maior */
-.field textarea {
+.dialogCampo textarea {
     min-height: 96px;
     resize: vertical;
     height: auto;
+    resize: none;
 }
 
 /* status group */
@@ -585,7 +566,42 @@ input,
 }
 
 .dialogButtons .btnSend {
-    flex: 1;
-    /* ocupa o espaço disponível */
+    flex: 1; /* ocupa o espaço disponível */
     height: 36px;
+}
+
+.resumoPedido {
+    display: flex;                 /* coloca os 3 blocos na horizontal */
+    justify-content: space-between;/* distribui espaço entre eles */
+    background-color: #E5E1E6;     /* cor de fundo */
+    border-radius: 12px;           /* bordas arredondadas */
+    padding: 16px;                 /* espaço interno */
+    margin-bottom: 20px;           /* espaço abaixo */
+    gap: 20px;                     /* espaço entre cada item */
+    font-size: 0.8rem;
+}
+
+.resumoPedido div {
+    flex: 1;                       /* cada bloco ocupa o mesmo espaço */
+    text-align: center;            /* centraliza o conteúdo */
+}
+
+.resumoPedido strong {
+    display: block;                /* coloca o título em cima */
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 6px;
+}
+
+.resumoPedido p {
+    font-size: 0.9rem;
+    color: #1A1A1A;
+    margin: 0;
+}
+
+.botoesIndex {
+    display: flex;
+    justify-content: center; /* centraliza horizontal */
+    gap: 20px;               /* espaço entre os botões */
+    margin-top: 50px;        /* afasta do topo */
 }

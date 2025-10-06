@@ -157,7 +157,7 @@ exports.deleteItemCart = async (req, res, next) => {
         const itensAtualizados = await buscaItensCarrinho(idCarrinho);
 
         return res.status(200).json({
-            message: `Produto ${idProdutoValidado} removido do carrinho ${idCarrinho}`,
+            message: `Produto removido do carrinho ${idCarrinho}`,
             id_carrinho: idCarrinho,
             itens_carrinho: itensAtualizados
         });

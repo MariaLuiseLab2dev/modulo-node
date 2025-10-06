@@ -23,7 +23,7 @@ CREATE TABLE pedidos (
     valor_total     REAL        NOT NULL
 );
 
-select * FROM pedidos;
+select * FROM produtos;
 
 CREATE TABLE itens_pedido (
     id_item     INTEGER     PRIMARY KEY AUTOINCREMENT,

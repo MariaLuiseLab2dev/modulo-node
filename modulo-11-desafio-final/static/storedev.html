@@ -6,31 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StoreDev</title>
     <script defer src="script/storedev.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/storedev.css">
 </head>
 
 <body>
     <header>
-        <h1>StoreDev</h1>
+        <h1>Store2Dev</h1>
         <p>Encontre os melhores produtos</p>
-
         <!-- Barra de pesquisa -->
         <form id="formBusca">
-            <input type="search" id="campoBusca" placeholder="Buscar produtos..." aria-label="Buscar produtos">
-            <button type="submit">buscar</button>
+            <input type="search" id="campoBusca" placeholder="Buscar produtos...">
         </form>
     </header>
 
     <main>
         <!-- Seção onde os produtos serão renderizados dinamicamente -->
         <section id="produtos">
-            <h2></h2> <!-- tem que vim o nome do banco-->
+            <div class="topCategory"> 
+            <h2></h2> <!-- tem que vim o nome da categoria do banco-->
             <h4></h4> <!-- qtde de itens -->
+            </div>
+            
             <div id="listaProdutos">
                 <!-- cards -->
+                 <div class="card">
+                    <h3></h3>
+                    <p></p>
+                 </div>
             </div>
         </section>
     </main>
+
+    <a href="cart.html" id="btnCarrinho" class="fab">
+        <img src="img/btnCarrinho.svg" alt="Carrinho">
+    </a>
+</div>
 </body>
 
 </html>

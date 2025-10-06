@@ -34,32 +34,29 @@ const btnLimparFiltros = document.getElementById("btnLimparFiltros");
 const inputDataInicial = document.getElementById("filtroDataInicial");
 const inputDataFinal = document.getElementById("filtroDataFinal");
 
-function formatarReal(valor) {
-    if (valor == null || isNaN(valor)) return "";
+function formatarReal(valor) { // coloca o R$ na frente
+    if (valor == null || isNaN(valor)) return ""; // verifica se o valor veio nulo
     return new Intl.NumberFormat("pt-BR", {
         style: "currency",
-        currency: "BRL"
+        currency: "BRL" // define a moeda
     }).format(valor);
 }
 
 function aplicarMascaraMoeda(input) {
-    input.addEventListener("input", (e) => {
-        // pega só os dígitos
-        let valor = e.target.value.replace(/\D/g, "");
+    input.addEventListener("input", (evento) => {
+        // tudo que n for digito (0-9), ele apaga
+        let valor = evento.target.value.replace(/\D/g, ""); 
 
-        if (valor === "") {
-            e.target.value = "";
+        if (valor === "") { // veio algum digito?
+            evento.target.value = "";
             return;
         }
 
         // transforma em número de centavos
-        let numero = parseFloat(valor) / 100;
+        let numero = parseFloat(valor) / 100; 
 
-        // formata em BRL
-        e.target.value = numero.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
+        // formata em BRL (coloca o R$ na frente)
+        evento.target.value = formatarReal(numero);
     });
 }
 
@@ -82,7 +79,10 @@ const formatarDataHorario = (formatoIso) => {
    DOMContentLoaded: listeners
    =========================== */
 document.addEventListener("DOMContentLoaded", () => {
-    // navegação
+    /* ---------------
+        NAVEGAÇÃO 
+        ---------------
+    */
     links.forEach(link => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
@@ -92,13 +92,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // ativa link e section clicados
             link.classList.add("active");
-            const idSelecionado = link.getAttribute("href").substring(1);
-            document.getElementById(idSelecionado).classList.add("active");
+            const secaoSelecionada = link.getAttribute("href").substring(1);
+            document.getElementById(secaoSelecionada).classList.add("active");
 
             // carrega dados da seção
-            if (idSelecionado === "categorias") carregarCategorias();
-            if (idSelecionado === "produtos") carregarProdutos();
-            if (idSelecionado === "pedidos") carregarPedidos();
+            if (secaoSelecionada === "categorias") carregarCategorias();
+            if (secaoSelecionada === "produtos") carregarProdutos();
+            if (secaoSelecionada === "pedidos") carregarPedidos();
         });
     });
 
@@ -106,55 +106,64 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("categorias").classList.add("active");
     carregarCategorias();
 
+    /* ---------------
+        CATEGORIAS 
+        ---------------
+    */
+
     // toggle label categoria
     if (statusCheckboxCategoria) {
         statusCheckboxCategoria.addEventListener("change", () => {
+            // modifica o span pra visivel e invisivel
             statusCategoriaLabel.textContent = statusCheckboxCategoria.checked ? "Visível" : "Invisível";
         });
     }
 
-    // abrir novo (categoria) - modo criar
+    // quando clicar no botão nova categoria
     btnNovaCategoria.addEventListener("click", () => {
         abrirDialogCategoriaCriar();
     });
 
-    // cancelar categoria
-    cancelarCategoria.addEventListener("click", (e) => {
-        e.preventDefault();
+    // quando clicar no botão fechar categoria
+    cancelarCategoria.addEventListener("click", (evento) => {
+        evento.preventDefault();
         fecharEResetarDialogCategoria();
     });
 
     // submit único para criar/editar categoria
-    formCategoria.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    formCategoria.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
         const dados = {
+            // 
             nome: document.getElementById("nomeCategoria").value,
             status: statusCheckboxCategoria.checked ? 1 : 0
         };
 
         try {
-            if (!editingCategoryId) {
-                // create
+            if (!editingCategoryId) { // se o modo edição estiver como falsy/null
+                // create categoria
                 const response = await fetch("http://127.0.0.1:3001/categorias", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(dados)
                 });
 
+                // verifica se a response veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
                     alert(err.error || err.message || "Erro ao criar categoria");
                     return;
                 }
 
-            } else {
-                // update
+            } else { // se o modo edição estiver como true
+                // update categoria
                 const response = await fetch(`http://127.0.0.1:3001/categorias/${editingCategoryId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(dados)
                 });
 
+                // verifica se a response veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
                     alert(err.error || err.message || "Erro ao atualizar categoria");
@@ -162,7 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
+            // reseta o dialog
             fecharEResetarDialogCategoria();
+            // carrega as categorias na table
             await carregarCategorias();
         } catch (error) {
             console.error("Erro no submit de categoria:", error);
@@ -170,44 +181,58 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // product toggles / open dialog
+    // quando o checkbox do produto mudar
     if (statusProduto) {
         statusProduto.addEventListener("change", () => {
+            // seta o span pra visivel e invisivel
             statusProdutoLabel.textContent = statusProduto.checked ? "Visível" : "Invisível";
         });
     }
 
+    /* ---------------
+        PRODUTOS 
+        ---------------
+    */
+
+    // quando clicar no botão criar produto
     btnNovoProduto.addEventListener("click", async () => {
+        // seta o modo edição como null
         editingProductId = null;
+        // carrega as categorias no select
         await carregarCategoriasNoSelect();
-        // tenta setar título do form se houver <h4>, senão não faz nada
+        // seta o titulo "Novo Produto" e o botão de criar produto
         const h4 = formProduto.querySelector("h4");
         const submitBtn = formProduto.querySelector('button[type="submit"]');
         if (h4) h4.textContent = "Novo Produto";
         if (submitBtn) submitBtn.textContent = "Criar Produto";
 
+        // mostra o dialog
         dialogProduto.showModal();
     });
 
+    // quando clicar no X
     cancelarProduto.addEventListener("click", (e) => {
         e.preventDefault();
-        dialogProduto.close();
-        resetarDialogProduto();
+        fecharEResetarDialogProduto(); // reseta e fecha o dialog
     });
 
+    // pega o input do preco do produto
     const inputPreco = document.getElementById("precoProduto");
+
+    // aplica a máscara enquanto digita
     aplicarMascaraMoeda(inputPreco);
 
-    formProduto.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    formProduto.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
 
+        // pra enviar ele precisa voltar a ser um float
         const inputPreco = document.getElementById("precoProduto");
         aplicarMascaraMoeda(inputPreco);
 
         // pega o valor formatado do input
         let precoFormatado = document.getElementById("precoProduto").value;
 
-        // remove "R$", espaços e pontos de milhar
+        // remove "R$", espaços (\s) e pontos de milhar
         precoFormatado = precoFormatado.replace(/[R$\s]/g, "").replace(/\./g, "");
 
         // troca vírgula por ponto
@@ -226,25 +251,27 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
-            if (!editingProductId) {
-                // create product
+            if (!editingProductId) { // se não tiver no modo edição
+                // create produto
                 const response = await fetch("http://127.0.0.1:3001/produtos", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(dados)
                 });
+                // verifica se a resposta veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
                     alert(err.error || err.message || "Erro ao criar produto");
                     return;
                 }
-            } else {
-                // update product
+            } else { // se estiver 
+                // update produto
                 const response = await fetch(`http://127.0.0.1:3001/produtos/${editingProductId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(dados)
                 });
+                // verifica se a resposta veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
                     alert(err.error || err.message || "Erro ao atualizar produto");
@@ -252,8 +279,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            dialogProduto.close();
-            resetarDialogProduto();
+            // reseta o dialog
+            fecharEResetarDialogProduto();
+            // carrega os produtos na table
             await carregarProdutos();
         } catch (err) {
             console.error("Erro ao salvar produto:", err);
@@ -261,36 +289,47 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // fechar pedido
+    /* ---------------
+        PEDIDOS 
+        ---------------
+    */
+    
+        // fechar pedido
     if (fecharPedidoBtn) {
         fecharPedidoBtn.addEventListener("click", () => {
             document.getElementById("dialogPedido").close();
         });
     }
 
-    // Filtros
-    if (btnToggleFiltros && filtrosDiv) {
-        btnToggleFiltros.addEventListener("click", () => {
+    /* ---------------
+        FILTROS 
+        ---------------
+    */
+   // mostra e desmostra o botão e div "Filtros"
+    if (btnToggleFiltros && filtrosDiv) { // se o botão e a div existirem
+        btnToggleFiltros.addEventListener("click", () => { // ao clicar no botão filtros
+            // se a div ta como none ou ainda não tem nenhum valor definido (ou seja, tá no estado inicial, antes de receber "block" ou "none").
             if (filtrosDiv.style.display === "none" || filtrosDiv.style.display === "") {
-                filtrosDiv.style.display = "block";
-                btnToggleFiltros.innerHTML = '<img src="img/btnFiltros.svg"> Filtros';
+                filtrosDiv.style.display = "block"; // mostra a div
+                btnToggleFiltros.innerHTML = '<img src="img/btnFiltros.svg"> Filtros'; // mostra o botão
             } else {
-                filtrosDiv.style.display = "none";
-                btnToggleFiltros.innerHTML = '<img src="img/btnFiltros.svg"> Filtros';
+                filtrosDiv.style.display = "none"; // esconde a div
+                btnToggleFiltros.innerHTML = '<img src="img/btnFiltros.svg"> Filtros'; // continue mostrando o botão
             }
         });
     }
 
-    // enquanto digita
+    // pega o input valor min e max
     const inputValorMin = document.getElementById("filtroValorMin");
     const inputValorMax = document.getElementById("filtroValorMax");
-    // aplica máscara de moeda nos inputs de valor
+    // aplica máscara de moeda nos inputs de valor enquanto digita
     aplicarMascaraMoeda(inputValorMin);
     aplicarMascaraMoeda(inputValorMax);
 
+    // se o btnFiltras existir
     if (btnFiltrarPedidos) {
-        btnFiltrarPedidos.addEventListener("click", () => {
-            carregarPedidosComFiltros(); // sua função que monta a URL com query params
+        btnFiltrarPedidos.addEventListener("click", () => { // quando dar o clique
+            carregarPedidosComFiltros(); // carrega os pedidos com filtros
         });
     }
 
@@ -312,25 +351,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function carregarCategorias() {
     try {
+        // chama o endpoint get categorias
         const response = await fetch("http://127.0.0.1:3001/categorias/");
         const categorias = await response.json();
 
+        // pega o body da tabela
         const tbody = document.querySelector("#tabelaCategorias tbody");
         tbody.innerHTML = ""; // limpa
 
+        // para cada categoria
         categorias.forEach(categoria => {
+            // seta o status e a classe css pra pintar
             const statusTexto = categoria.status === 1 ? "Visível" : "Invisível";
             const statusClasse = categoria.status === 1 ? "statusVis" : "statusInv";
 
+            // cria o tr
             const tr = document.createElement("tr");
+            // adiciona as colunas com as info.
             tr.innerHTML = `
-        <td>${categoria.id_categoria}</td>
-        <td>${categoria.nome}</td>
-        <td><span class="${statusClasse}">${statusTexto}</span></td>
-        <td>
-          <button type="button" class="editarCategoria btnEditar" data-id="${categoria.id_categoria}"><img src="img/btnEditar.svg"></button>
-        </td>
-      `;
+                <td>${categoria.id_categoria}</td>
+                <td>${categoria.nome}</td>
+                <td><span class="${statusClasse}">${statusTexto}</span></td>
+                <td>
+                <button type="button" class="editarCategoria btnEditar" data-id="${categoria.id_categoria}"><img src="img/btnEditar.svg"></button>
+                </td>
+                `;
+            // joga a linha dentro do body  
             tbody.appendChild(tr);
         });
 
@@ -347,23 +393,31 @@ async function carregarCategorias() {
 }
 
 function abrirDialogCategoriaCriar() {
+    // seta o modo edição como nulo
     editingCategoryId = null;
-    // atualiza título e texto do submit se existir
+    //cria o h4
     const h4 = formCategoria.querySelector("h4");
-    const submitBtn = formCategoria.querySelector('button[type="submit"]');
-    if (h4) h4.textContent = "Nova Categoria";
-    if (submitBtn) submitBtn.textContent = "Criar Categoria";
-
+    //cria o botão pra enviar  
+    const submitBtn = formCategoria.querySelector('button[type="submit"]'); 
+    // define os nomes do titulo e do botão
+    if (h4) h4.textContent = "Nova Categoria"; 
+    if (submitBtn) submitBtn.textContent = "Criar Categoria"; 
+    // reseta o fom categoria
     formCategoria.reset();
+    // se status existir
     if (statusCheckboxCategoria) {
+        // seta check como true
         statusCheckboxCategoria.checked = true;
-        statusCategoriaLabel.textContent = "Visível";
+        // seta a span como Visível  
+        statusCategoriaLabel.textContent = "Visível"; 
     }
+    // mostra o dialog
     dialogCategoria.showModal();
 }
 
 async function abrirDialogCategoriaEditar(id) {
     try {
+        // busca o endpoint pra editar
         const response = await fetch(`http://127.0.0.1:3001/categorias/${id}`);
         if (!response.ok) {
             const err = await response.json().catch(() => ({}));
@@ -373,9 +427,11 @@ async function abrirDialogCategoriaEditar(id) {
         const categoria = await response.json();
 
         // preencher form
-        document.getElementById("nomeCategoria").value = categoria.nome || "";
+        document.getElementById("nomeCategoria").value = categoria.nome; // busca o nome da categoria
         if (statusCheckboxCategoria) {
+            // seta o status como checked
             statusCheckboxCategoria.checked = categoria.status === 1;
+            // seta o nome da span
             statusCategoriaLabel.textContent = statusCheckboxCategoria.checked ? "Visível" : "Invisível";
         }
 
@@ -394,14 +450,18 @@ async function abrirDialogCategoriaEditar(id) {
 }
 
 function fecharEResetarDialogCategoria() {
+    // fecha o dialog
     dialogCategoria.close();
+    // reseta o form
     formCategoria.reset();
+    // define o modo de edição como nulo
     editingCategoryId = null;
+    // seta o checkbox como true
     if (statusCheckboxCategoria) {
         statusCheckboxCategoria.checked = true;
         statusCategoriaLabel.textContent = "Visível";
     }
-    // restaura textos
+    // restaura textos pra criação
     const h4 = formCategoria.querySelector("h4");
     const submitBtn = formCategoria.querySelector('button[type="submit"]');
     if (h4) h4.textContent = "Nova Categoria";
@@ -425,15 +485,15 @@ async function carregarProdutos() {
 
             const tr = document.createElement("tr");
             tr.innerHTML = `
-        <td>${produto.id_produto}</td>
-        <td>${produto.nome}</td>
-        <td>${produto.descricao}</td>
-        <td>${produto.nome_categoria}</td>
-        <td>${formatarReal(produto.preco)}</td>
-        <td>${produto.estoque}</td>
-        <td><span class="${statusClasse}">${statusTexto}</span></td>
-        <td><button class="editarProduto btnEditar" data-id="${produto.id_produto}"><img src="img/btnEditar.svg"></button></td>
-      `;
+            <td>${produto.id_produto}</td>
+            <td>${produto.nome}</td>
+            <td>${produto.descricao}</td>
+            <td>${produto.nome_categoria}</td>
+            <td>${formatarReal(produto.preco)}</td>
+            <td>${produto.estoque}</td>
+            <td><span class="${statusClasse}">${statusTexto}</span></td>
+            <td><button class="editarProduto btnEditar" data-id="${produto.id_produto}"><img src="img/btnEditar.svg"></button></td>
+        `;
             tbody.appendChild(tr);
         });
 
@@ -455,7 +515,7 @@ async function editaProduto(id) {
         if (!res.ok) throw new Error("Produto não encontrado");
         const produto = await res.json();
 
-        // garante opções do select
+        // joga as categorias como opções do select
         await carregarCategoriasNoSelect();
 
         // preenche campos
@@ -481,7 +541,8 @@ async function editaProduto(id) {
     }
 }
 
-function resetarDialogProduto() {
+function fecharEResetarDialogProduto() {
+    dialogProduto.close(); // fecha o dialog
     editingProductId = null;
     formProduto.reset();
     statusProduto.checked = true;
@@ -532,8 +593,22 @@ async function carregarPedidoPorId(id) {
         const pedido = await response.json();
 
         document.getElementById("pedidoId").textContent = pedido.id_pedido;
-        document.getElementById("pedidoData").textContent = pedido.data_criacao;
+        document.getElementById("pedidoData").textContent = formatarDataHorario(pedido.data_criacao).split(" ")[0];
         document.getElementById("pedidoValor").textContent = formatarReal(pedido.valor_total);
+        
+        let quantidadeTotal = 0;
+
+        // se existir um array de itens
+        if (pedido.itens && Array.isArray(pedido.itens)) {
+           // pra cada item dentro de itens
+            for (let item of pedido.itens) {
+                // soma cada quantidade, garantindo que é número
+                quantidadeTotal += Number(item.quantidade) || 0;
+            }
+        } else {
+            quantidadeTotal = 0; // valor padrão
+        }
+        document.getElementById("pedidoQtde").textContent = quantidadeTotal;
 
         const tbody = document.getElementById("pedidoItens");
         tbody.innerHTML = "";
@@ -556,7 +631,7 @@ async function carregarPedidoPorId(id) {
 }
 
 /* ---------------------------
-   Helpers (select de categorias)
+   Helpers 
    --------------------------- */
 async function carregarCategoriasNoSelect() {
     try {
@@ -567,9 +642,13 @@ async function carregarCategoriasNoSelect() {
         select.innerHTML = ""; // limpa
 
         categorias.forEach(categoria => {
+            // cria option
             const option = document.createElement("option");
+            // valor dele e o id
             option.value = categoria.id_categoria;
+            // no html aparece o nome dele
             option.textContent = categoria.nome;
+            // coloca o option dentro do select
             select.appendChild(option);
         });
 

@@ -1,0 +1,66 @@
+@font-face {
+    /* Declaração de fonte personalizada */
+    font-family: 'Montserrat';
+    /* Nome da fonte */
+    src: url("fonts/Montserrat-Regular.ttf");
+    /* Caminho do arquivo da fonte regular */
+    font-weight: 400;
+    /* Peso normal */
+    font-style: normal;
+    /* Estilo normal */
+}
+
+@font-face {
+    /* Segunda variação da fonte */
+    font-family: 'Montserrat';
+    /* Mesmo nome da família */
+    src: url("fonts/Montserrat-Bold.ttf");
+    /* Caminho do arquivo bold */
+    font-weight: 700;
+    /* Peso negrito */
+    font-style: normal;
+    /* Estilo normal */
+}
+
+* {
+    /* Reset básico */
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: 700;
+    color: #712782;
+}
+
+main {
+    margin-top: 150px;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    padding: 20px;
+    box-shadow: 0 2px 5px #1A1A1A;
+    background-color: #FFFFFF;
+}
+
+.fab {
+position: fixed;       /* fixo na tela */
+    bottom: 16px;          /* distância da borda inferior */
+    right: 16px;            /* distância da borda esquerda */
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;    /* deixa redondim */
+    background-color: #712782;
+    border: 0px;
+    cursor: pointer;
+    display: flex;              /* ativa flexbox */
+    align-items: center;        /* centraliza verticalmente */
+    justify-content: center;    /* centraliza horizontalmente */
+}

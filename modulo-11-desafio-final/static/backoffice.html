@@ -22,21 +22,21 @@
     </header>
 
     <section id="categorias">
-        <div class="table-wrapper">
+        <div class="tabelaContainer">
             <div class="cabecalho">
                 <h3>Categorias</h3>
                 <button id="novaCategoria" class="btnNovaCategoria">+ Nova Categoria</button>
             </div>
-            <!-- único dialog usado para criar/editar categoria -->
+
             <dialog id="dialogCategoria" class="dialogDiv">
-                <div class="dialogContent">
+                <div class="dialogConteudo">
                     <button type="button" class="btnFechar" id="cancelarCategoria"><img src="img/btnFechar.svg"
                             alt="Fechar"></button>
 
-                    <h4 class="dialogTitle">Nova Categoria</h4>
+                    <h4 class="dialogTitulo">Nova Categoria</h4>
 
                     <form id="formCategoria" class="dialogForm" method="dialog">
-                        <div class="field">
+                        <div class="dialogCampo">
                             <label for="nomeCategoria">Nome</label>
                             <input type="text" id="nomeCategoria" name="nome" placeholder="Digite o nome da categoria"
                                 required>
@@ -75,47 +75,48 @@
     </section>
 
     <section id="produtos">
-        <div class="table-wrapper">
+        <div class="tabelaContainer">
             <div class="cabecalho">
                 <h3>Produtos</h3>
                 <button id="novoProduto" class="btnNovoProduto">+ Novo Produto</button>
             </div>
 
             <dialog id="dialogProduto" class="dialogDiv">
-                <div class="dialogContent">
-                    <button type="button" class="btnFechar" id="cancelarProduto"><img src="img/btnFechar.svg"alt="Fechar"></button>
+                <div class="dialogConteudo">
+                    <button type="button" class="btnFechar" id="cancelarProduto"><img src="img/btnFechar.svg"
+                            alt="Fechar"></button>
 
-                    <h4 class="dialogTitle">Novo Produto</h4>
+                    <h4 class="dialogTitulo">Novo Produto</h4>
 
                     <form id="formProduto" class="dialogForm" method="dialog">
                         <!-- Campo nome -->
-                        <div class="field">
+                        <div class="dialogCampo">
                             <label for="nomeProduto">Nome</label>
                             <input type="text" id="nomeProduto" name="nome" placeholder="Digite o nome do produto"
                                 required>
                         </div>
 
                         <!-- Campo descrição -->
-                        <div class="field">
+                        <div class="dialogCampo">
                             <label for="descricaoProduto">Descrição</label>
                             <textarea id="descricaoProduto" name="descricao" placeholder="Digite a descrição do produto"
                                 required></textarea>
                         </div>
 
                         <!-- Campo categoria (select) -->
-                        <div class="field">
+                        <div class="dialogCampo">
                             <label for="categoriaProduto">Categoria</label>
                             <select id="categoriaProduto" name="id_categoria" required></select>
                         </div>
 
                         <!-- Campo preço -->
-                        <div class="field">
+                        <div class="dialogCampo">
                             <label for="precoProduto">Preço</label>
                             <input type="text" id="precoProduto" name="preco" min="0" step="0.01" required>
                         </div>
 
                         <!-- Campo estoque -->
-                        <div class="field">
+                        <div class="dialogCampo">
                             <label for="estoqueProduto">Estoque</label>
                             <input type="number" id="estoqueProduto" name="estoque" min="0" required>
                         </div>
@@ -160,68 +161,81 @@
     </section>
 
     <section id="pedidos">
-        <div class="table-wrapper">
+        <div class="tabelaContainer">
             <div class="cabecalho">
                 <h3>Pedidos</h3>
                 <button id="btnToggleFiltros" class="btnFiltros"><img src="img/btnFiltros.svg"> Filtros</button>
+
+
+                <!-- filtros  -->
+                <div id="filtrosPedidos" class="tabelaContainer" style="display: none;">
+                    <h4>Filtros</h4>
+                    <div class="filtros-horizontal">
+                        <div class="filtro-item">
+                            <label for="filtroDataInicial">Data inicial</label>
+                            <input type="date" id="filtroDataInicial">
+                        </div>
+
+                        <div class="filtro-item">
+                            <label for="filtroDataFinal">Data final</label>
+                            <input type="date" id="filtroDataFinal">
+                        </div>
+
+                        <div class="filtro-item">
+                            <label for="filtroValorMin">Valor mín</label>
+                            <input type="text" id="filtroValorMin" placeholder="R$00,00">
+                        </div>
+
+                        <div class="filtro-item">
+                            <label for="filtroValorMax">Valor máx</label>
+                            <input type="text" id="filtroValorMax" placeholder="R$00,00">
+                        </div>
+                    </div>
+
+                    <div class="filtro-actions">
+                        <button id="btnLimparFiltros" class="btnFiltros">Limpar Filtros</button>
+                        <button id="btnFiltrarPedidos" class="btnFiltrar">Filtrar</button>
+                    </div>
+                </div>
+
+                <dialog id="dialogPedido" class="dialogDiv">
+                    <div class="dialogConteudo">
+                        <button type="button" class="btnFechar" id="fecharPedido"><img src="img/btnFechar.svg"
+                                alt="Fechar"></button>
+                        <h4>Detalhes do Pedido <strong>#</strong><span id="pedidoId"></span></h4>
+                        <div class="resumoPedido">
+                            <div>
+                                <strong>Data</strong>
+                                <p id="pedidoData"></p>
+                            </div>
+                            <div>
+                                <strong>Qtde de Itens</strong>
+                                <p id="pedidoQtde"></p>
+                            </div>
+                            <div>
+                                <strong>Valor Total</strong>
+                                <p id="pedidoValor"></p>
+                            </div>
+                        </div>
+
+
+                        <h3>Produtos</h3>
+                        <div class="tabelaContainer">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Descrição</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço Unitário</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pedidoItens"></tbody>
+                            </table>
+                        </div>
+                    </div>
             </div>
-
-            <!-- filtros  -->
-            <div id="filtrosPedidos" class="table-wrapper" style="display: none;">
-                <h4>Filtros</h4>
-                <div class="filtros-horizontal">
-                    <div class="filtro-item">
-                        <label for="filtroDataInicial">Data inicial</label>
-                        <input type="date" id="filtroDataInicial">
-                    </div>
-
-                    <div class="filtro-item">
-                        <label for="filtroDataFinal">Data final</label>
-                        <input type="date" id="filtroDataFinal">
-                    </div>
-
-                    <div class="filtro-item">
-                        <label for="filtroValorMin">Valor mín</label>
-                        <input type="text" id="filtroValorMin" placeholder="R$00,00">
-                    </div>
-
-                    <div class="filtro-item">
-                        <label for="filtroValorMax">Valor máx</label>
-                        <input type="text" id="filtroValorMax" placeholder="R$00,00">
-                    </div>
-                </div>
-
-                <div class="filtro-actions">
-                    <button id="btnLimparFiltros" class="btnFiltros">Limpar Filtros</button>
-                    <button id="btnFiltrarPedidos" class="btnFiltrar">Filtrar</button>
-                </div>
-            </div>
-
-            <dialog id="dialogPedido">
-                <div class="dialogDiv">
-                    <h4>Pedido</h4>
-                    <p><strong>ID:</strong> <span id="pedidoId"></span></p>
-                    <p><strong>Data:</strong> <span id="pedidoData"></span></p>
-                    <p><strong>Valor Total:</strong><span id="pedidoValor"></span></p>
-
-                    <h5>Itens</h5>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Produto</th>
-                                <th>Descrição</th>
-                                <th>Qtd de Itens</th>
-                                <th>Preço Unitário</th>
-                                <th>Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pedidoItens"></tbody>
-                    </table>
-
-                    <div>
-                        <button id="fecharPedido">Fechar</button>
-                    </div>
-                </div>
             </dialog>
 
             <table id="tabelaPedidos">
@@ -236,6 +250,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
         </div>
     </section>
 </body>

@@ -110,7 +110,6 @@ exports.getAllOrders = async (req, res, next) => {
             data_criacao: new Date(p.data_criacao).toISOString()
         }));
 
-        // Loga no console a query final e os parâmetros (para debug)
         console.log("SQL:", sql);
         console.log("Params:", params);
 

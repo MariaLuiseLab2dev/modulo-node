@@ -49,7 +49,7 @@ async function validaPreco(preco) {
 
 async function validaEstoque(estoque) {
     const estoqueNum = Number(estoque);
-    if (!Number.isInteger(estoqueNum) || estoqueNum <= 0) {
+    if (!Number.isInteger(estoqueNum) || estoqueNum < 0) {
         throw new ValidationError("estoque", "Deve ser um número maior ou igual a zero");
     }
     return estoqueNum;
@@ -282,7 +282,8 @@ async function buscaItensCarrinho(id_carrinho) {
                 ic.preco,
                 ic.id_produto,
                 p.nome,
-                p.estoque
+                p.estoque,
+                p.descricao
         FROM itens_carrinho ic
         JOIN produtos p 
         ON ic.id_produto = p.id_produto
@@ -297,9 +298,17 @@ async function verificaEstoqueProduto(id_produto, quantidadeAdicional, id_carrin
     const sqlProduto = `SELECT estoque FROM produtos WHERE id_produto = ?`;
 
     const produto = await getQuery(sqlProduto, [id_produto]);
-
+    // Busca o estoque atual do produto no banco
     if (!produto) throw new NotFoundError(`Produto ${id_produto}`);
+    // Se o produto já está sem estoque, não pode ser adicionado
+    if (produto.estoque === 0) {
+        throw new ValidationError(
+            "estoque",
+            `Produto ${id_produto} está sem estoque e não pode ser adicionado ao carrinho.`
+        );
+    }
 
+    // Se for passado um carrinho, soma a quantidade já existente desse produto no carrinho
     let quantidadeNoCarrinho = 0;
     if (id_carrinho) {
         const sqlQtdNoCarrinho = `
@@ -310,8 +319,10 @@ async function verificaEstoqueProduto(id_produto, quantidadeAdicional, id_carrin
         const row = await getQuery(sqlQtdNoCarrinho, [id_carrinho, id_produto]);
         quantidadeNoCarrinho = row ? (row.total || 0) : 0;
     }
-
+    // Calcula o total desejado (o que já tem + o que o usuário quer adicionar)
     const totalDesejado = quantidadeNoCarrinho + Number(quantidadeAdicional);
+    
+    // Se o total desejado ultrapassa o estoque disponivel
     if (totalDesejado > produto.estoque) {
         throw new ValidationError(
             "estoque",
