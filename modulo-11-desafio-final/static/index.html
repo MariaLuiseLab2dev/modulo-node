@@ -4,13 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
+    <link rel="stylesheet" href="css/backoffice.css">
+    <link rel="stylesheet" href="css/storedev.css">
+    <script defer src="script/modal.js"></script>
     <script defer src="script/index.js"></script>
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="botoesIndex" >
         <button id="backoffice" class="btnNovaCategoria">Ir para Backoffice</button>
         <button id="storedev" class="btnNovaCategoria">Ir para StoreDev</button>
     </div>
+    <div id="alertModal" class="alertModal" role="alert" aria-hidden="true">
+    <!-- caixa do conteúdo do alert -->
+    <div class="alertBox" id="alertBox">
+        <!-- ícone e texto do alert -->
+        <div class="alertConteudo">
+            <img id="alertIcon" class="alertIcone" src="" alt="Ícone do alerta">
+            <div class="alertText">
+                <div id="alertTitle" class="alertTitle"></div>
+                <div id="alertMessage" class="alertMessage"></div>
+            </div>
+        </div>
+        <!-- botão de fechar -->
+        <button id="alertClose" class="alertClose" aria-label="Fechar alerta">&times;</button>
+    </div>
+
 </body>
 </html>

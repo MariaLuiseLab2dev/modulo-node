@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backoffice</title>
     <script defer src="script/backoffice.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <script defer src="script/modal.js"></script>
+    <link rel="stylesheet" href="css/backoffice.css">
+    <link rel="stylesheet" href="css/storedev.css">
 </head>
 
 <body>
@@ -59,6 +61,7 @@
                     </form>
                 </div>
             </dialog>
+            <div class="backDark"></div>
 
             <table id="tabelaCategorias">
                 <thead>
@@ -140,7 +143,7 @@
                     </form>
                 </div>
             </dialog>
-
+            <div class="backDark"></div>
 
             <table id="tabelaProdutos">
                 <thead>
@@ -237,7 +240,8 @@
                     </div>
             </div>
             </dialog>
-
+            <div class="backDark"></div>
+            
             <table id="tabelaPedidos">
                 <thead>
                     <tr>
@@ -253,6 +257,22 @@
         </div>
         </div>
     </section>
-</body>
 
+<div id="alertModal" class="alertModal" role="alert" aria-hidden="true">
+    <!-- caixa do conteúdo do alert -->
+    <div class="alertBox" id="alertBox">
+        <!-- ícone e texto do alert -->
+        <div class="alertConteudo">
+            <img id="alertIcon" class="alertIcone" src="" alt="Ícone do alerta">
+            <div class="alertText">
+                <div id="alertTitle" class="alertTitle"></div>
+                <div id="alertMessage" class="alertMessage"></div>
+            </div>
+        </div>
+        <!-- botão de fechar -->
+        <button id="alertClose" class="alertClose" aria-label="Fechar alerta">&times;</button>
+    </div>
+</div>
+
+</body>
 </html>

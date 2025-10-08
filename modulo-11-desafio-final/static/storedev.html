@@ -5,34 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StoreDev</title>
-    <script defer src="script/storedev.js"></script>
     <link rel="stylesheet" href="css/storedev.css">
+    <script defer src="script/storedev.js"></script>
+    <script defer src="script/modal.js"></script>
 </head>
 
 <body>
-    <header>
-        <h1>Store2Dev</h1>
+    <header class="header">
+        <h2>Store2Dev</h2>
         <p>Encontre os melhores produtos</p>
         <!-- Barra de pesquisa -->
         <form id="formBusca">
-            <input type="search" id="campoBusca" placeholder="Buscar produtos...">
+            <input type="search" class="buscarCampo" id="campoBusca" placeholder="Buscar produtos...">
         </form>
     </header>
 
-    <main>
-        <!-- Seção onde os produtos serão renderizados dinamicamente -->
-        <section id="produtos">
-            <div class="topCategory"> 
-            <h2></h2> <!-- tem que vim o nome da categoria do banco-->
+    <main class="main">
+        <!-- Seção onde os produtos vão se renderizados  -->
+        <section id="produtos" class="categoriaSection">
+            <h3></h3> <!-- tem que vim o nome da categoria do banco-->
             <h4></h4> <!-- qtde de itens -->
-            </div>
-            
-            <div id="listaProdutos">
+
+            <div id="listaProdutos" class="cardsContainer">
                 <!-- cards -->
-                 <div class="card">
-                    <h3></h3>
+                <div class="card">
+                    <h5></h5>
                     <p></p>
-                 </div>
+                </div>
             </div>
         </section>
     </main>
@@ -40,7 +39,23 @@
     <a href="cart.html" id="btnCarrinho" class="fab">
         <img src="img/btnCarrinho.svg" alt="Carrinho">
     </a>
-</div>
+    </div>
+
+    <div id="alertModal" class="alertModal" role="alert" aria-hidden="true">
+        <!-- caixa do conteúdo do alert -->
+        <div class="alertBox" id="alertBox">
+            <!-- ícone e texto do alert -->
+            <div class="alertConteudo">
+                <img id="alertIcon" class="alertIcone" src="" alt="Ícone do alerta">
+                <div class="alertText">
+                    <div id="alertTitle" class="alertTitle"></div>
+                    <div id="alertMessage" class="alertMessage"></div>
+                </div>
+            </div>
+            <!-- botão de fechar -->
+            <button id="alertClose" class="alertClose" aria-label="Fechar alerta">&times;</button>
+        </div>
+    </div>
 </body>
 
 </html>

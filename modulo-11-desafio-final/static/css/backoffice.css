@@ -235,15 +235,11 @@ section.active {
 }
 
 #filtrosPedidos {
-    /* Filtros pedidos */
     display: none;
-    /* Escondidos */
 }
 
 #filtrosPedidos.ativo {
-    /* Quando ativo */
     display: block;
-    /* Mostrados */
 }
 
 label {
@@ -266,7 +262,7 @@ label {
     color: #FFFFFF;
     font-weight: 500;
     border: 0;
-
+    cursor: pointer;
 }
 
 .filtro-actions {
@@ -289,7 +285,6 @@ label {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    /* espaço entre os blocos */
 }
 
 .filtro-item {
@@ -440,7 +435,7 @@ dialog.dialogDiv {
     top: 50%;/* ponto de referência vertical */
     left: 50%;/* ponto de referência horizontal */
     transform: translate(-50%, -50%);/* centraliza perfeitamente */
-    z-index: 1000; /* fica sobre o resto da tela */
+    z-index: 9999;
 }
 
 .dialogDiv {
@@ -452,6 +447,8 @@ dialog.dialogDiv {
     padding: 0;
     color: #1A1A1A;
 }
+
+
 
 .dialogConteudo {
     position: relative;
@@ -527,6 +524,7 @@ input,
 .btnEditar, .btnDetalhes { 
     background-color: transparent; 
     border: 0px; 
+    cursor: pointer;
 } 
 .btnEditar img, .btnDetalhes img { 
     width: 24px; 

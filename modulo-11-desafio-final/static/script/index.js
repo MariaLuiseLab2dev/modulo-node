@@ -1,7 +1,7 @@
 document.getElementById('backoffice').addEventListener('click', async () => {
     try {
         window.location.href = "backoffice.html";
-    } catch (error){
+    } catch (error) {
         alert("Erro ao ir pro backoffice");
     }
 });
@@ -9,7 +9,7 @@ document.getElementById('backoffice').addEventListener('click', async () => {
 document.getElementById('storedev').addEventListener('click', async () => {
     try {
         window.location.href = "storedev.html";
-    } catch (error){
+    } catch (error) {
         alert("Erro ao ir pro storedev");
     }
 });

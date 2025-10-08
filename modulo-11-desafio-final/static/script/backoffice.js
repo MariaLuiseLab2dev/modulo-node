@@ -45,7 +45,7 @@ function formatarReal(valor) { // coloca o R$ na frente
 function aplicarMascaraMoeda(input) {
     input.addEventListener("input", (evento) => {
         // tudo que n for digito (0-9), ele apaga
-        let valor = evento.target.value.replace(/\D/g, ""); 
+        let valor = evento.target.value.replace(/\D/g, "");
 
         if (valor === "") { // veio algum digito?
             evento.target.value = "";
@@ -53,7 +53,7 @@ function aplicarMascaraMoeda(input) {
         }
 
         // transforma em número de centavos
-        let numero = parseFloat(valor) / 100; 
+        let numero = parseFloat(valor) / 100;
 
         // formata em BRL (coloca o R$ na frente)
         evento.target.value = formatarReal(numero);
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // verifica se a response veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
-                    alert(err.error || err.message || "Erro ao criar categoria");
+                    showAlert({ tipo: "error", mensagem: err.error || err.message || "Erro ao atualizar categoria", duracao: 0 });
                     return;
                 }
 
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // verifica se a response veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
-                    alert(err.error || err.message || "Erro ao atualizar categoria");
+                    showAlert({ tipo: "error", mensagem: err.error || err.message || "Erro ao atualizar categoria", duracao: 0 });
                     return;
                 }
             }
@@ -177,7 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
             await carregarCategorias();
         } catch (error) {
             console.error("Erro no submit de categoria:", error);
-            alert("Erro de rede ou servidor");
+            showAlert({ tipo: "error", mensagem: "Erro de servidor", duracao: 0 });
+
         }
     });
 
@@ -207,7 +208,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (submitBtn) submitBtn.textContent = "Criar Produto";
 
         // mostra o dialog
-        dialogProduto.showModal();
+        dialogProduto.show();
+        const backdrop = document.querySelector("#produtos .backDark");
+        if (backdrop) backdrop.style.display = "block";
     });
 
     // quando clicar no X
@@ -261,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // verifica se a resposta veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
-                    alert(err.error || err.message || "Erro ao criar produto");
+                    showAlert({ tipo: "error", mensagem: err.error || err.message || "Erro ao criar o produto.", duracao: 0 });
                     return;
                 }
             } else { // se estiver 
@@ -274,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // verifica se a resposta veio ok
                 if (!response.ok) {
                     const err = await response.json().catch(() => ({}));
-                    alert(err.error || err.message || "Erro ao atualizar produto");
+                    showAlert({ tipo: "error", mensagem: err.error || err.message || "Erro ao atualizar produto.", duracao: 0 });
                     return;
                 }
             }
@@ -285,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
             await carregarProdutos();
         } catch (err) {
             console.error("Erro ao salvar produto:", err);
-            alert("Erro de rede ou servidor");
+            showAlert({ tipo: "error", mensagem: "Erro de rede ou servidor", duracao: 0 });
         }
     });
 
@@ -293,11 +296,14 @@ document.addEventListener("DOMContentLoaded", () => {
         PEDIDOS 
         ---------------
     */
-    
-        // fechar pedido
+
+    // fechar pedido
     if (fecharPedidoBtn) {
         fecharPedidoBtn.addEventListener("click", () => {
             document.getElementById("dialogPedido").close();
+            
+            const backdrop = document.querySelector("#pedidos .backDark");
+            if (backdrop) backdrop.style.display = "none";
         });
     }
 
@@ -305,7 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
         FILTROS 
         ---------------
     */
-   // mostra e desmostra o botão e div "Filtros"
+    // mostra e desmostra o botão e div "Filtros"
     if (btnToggleFiltros && filtrosDiv) { // se o botão e a div existirem
         btnToggleFiltros.addEventListener("click", () => { // ao clicar no botão filtros
             // se a div ta como none ou ainda não tem nenhum valor definido (ou seja, tá no estado inicial, antes de receber "block" ou "none").
@@ -398,10 +404,10 @@ function abrirDialogCategoriaCriar() {
     //cria o h4
     const h4 = formCategoria.querySelector("h4");
     //cria o botão pra enviar  
-    const submitBtn = formCategoria.querySelector('button[type="submit"]'); 
+    const submitBtn = formCategoria.querySelector('button[type="submit"]');
     // define os nomes do titulo e do botão
-    if (h4) h4.textContent = "Nova Categoria"; 
-    if (submitBtn) submitBtn.textContent = "Criar Categoria"; 
+    if (h4) h4.textContent = "Nova Categoria";
+    if (submitBtn) submitBtn.textContent = "Criar Categoria";
     // reseta o fom categoria
     formCategoria.reset();
     // se status existir
@@ -409,10 +415,13 @@ function abrirDialogCategoriaCriar() {
         // seta check como true
         statusCheckboxCategoria.checked = true;
         // seta a span como Visível  
-        statusCategoriaLabel.textContent = "Visível"; 
+        statusCategoriaLabel.textContent = "Visível";
     }
     // mostra o dialog
-    dialogCategoria.showModal();
+    dialogCategoria.show();
+
+    const backdrop = document.querySelector("#categorias .backDark");
+    if (backdrop) backdrop.style.display = "block";
 }
 
 async function abrirDialogCategoriaEditar(id) {
@@ -421,7 +430,7 @@ async function abrirDialogCategoriaEditar(id) {
         const response = await fetch(`http://127.0.0.1:3001/categorias/${id}`);
         if (!response.ok) {
             const err = await response.json().catch(() => ({}));
-            alert(err.error || err.message || "Categoria não encontrada");
+            showAlert({ tipo: "error", mensagem: err.error || err.message || "Categoria não encontrada", duracao: 0 });
             return;
         }
         const categoria = await response.json();
@@ -442,16 +451,23 @@ async function abrirDialogCategoriaEditar(id) {
         if (h4) h4.textContent = "Editar Categoria";
         if (submitBtn) submitBtn.textContent = "Salvar Alterações";
 
-        dialogCategoria.showModal();
+        dialogCategoria.show();
+        const backdrop = document.querySelector("#categorias .backDark");
+        if (backdrop) backdrop.style.display = "block";
+
     } catch (error) {
         console.error("Erro ao abrir dialog de editar categoria:", error);
-        alert("Erro ao carregar categoria");
+        showAlert({ tipo: "error", mensagem: "Erro ao carregar categoria", duracao: 0 });
     }
 }
 
 function fecharEResetarDialogCategoria() {
     // fecha o dialog
     dialogCategoria.close();
+
+    const backdrop = document.querySelector("#categorias .backDark");
+    if (backdrop) backdrop.style.display = "none";
+
     // reseta o form
     formCategoria.reset();
     // define o modo de edição como nulo
@@ -466,6 +482,7 @@ function fecharEResetarDialogCategoria() {
     const submitBtn = formCategoria.querySelector('button[type="submit"]');
     if (h4) h4.textContent = "Nova Categoria";
     if (submitBtn) submitBtn.textContent = "Criar Categoria";
+    
 }
 
 /* ---------------------------
@@ -534,15 +551,21 @@ async function editaProduto(id) {
         if (h4) h4.textContent = "Editar Produto";
         if (submitBtn) submitBtn.textContent = "Salvar Alterações";
 
-        dialogProduto.showModal();
+        dialogProduto.show();
+        const backdrop = document.querySelector("#produtos .backDark");
+        if (backdrop) backdrop.style.display = "block";
     } catch (err) {
         console.error("Erro ao carregar produto para edição:", err);
-        alert(err.message || "Erro ao carregar produto");
+        showAlert({ tipo: "error", mensagem: "Erro ao atualizar o produto", duracao: 0 });
     }
 }
 
 function fecharEResetarDialogProduto() {
     dialogProduto.close(); // fecha o dialog
+
+    const backdrop = document.querySelector("#produtos .backDark");
+    if (backdrop) backdrop.style.display = "none";
+    
     editingProductId = null;
     formProduto.reset();
     statusProduto.checked = true;
@@ -595,12 +618,12 @@ async function carregarPedidoPorId(id) {
         document.getElementById("pedidoId").textContent = pedido.id_pedido;
         document.getElementById("pedidoData").textContent = formatarDataHorario(pedido.data_criacao).split(" ")[0];
         document.getElementById("pedidoValor").textContent = formatarReal(pedido.valor_total);
-        
+
         let quantidadeTotal = 0;
 
         // se existir um array de itens
         if (pedido.itens && Array.isArray(pedido.itens)) {
-           // pra cada item dentro de itens
+            // pra cada item dentro de itens
             for (let item of pedido.itens) {
                 // soma cada quantidade, garantindo que é número
                 quantidadeTotal += Number(item.quantidade) || 0;
@@ -624,7 +647,10 @@ async function carregarPedidoPorId(id) {
             tbody.appendChild(tr);
         });
 
-        document.getElementById("dialogPedido").showModal();
+        document.getElementById("dialogPedido").show();
+        const backdrop = document.querySelector("#pedidos .backDark");
+        if (backdrop) backdrop.style.display = "block";
+
     } catch (error) {
         console.error("Erro ao carregar pedido por id:", error);
     }
@@ -703,10 +729,10 @@ async function carregarPedidosComFiltros() {
             // Preenche a linha com os dados do pedido
             tr.innerHTML = `
                 <td>${pedido.id_pedido}</td>
-                <td>${new Date(pedido.data_criacao).toLocaleString("pt-BR")}</td>
+                <td>${formatarDataHorario(pedido.data_criacao)}</td>
                 <td>${pedido.quantidade}</td>
                 <td>${formatarReal(pedido.valor_total)}</td>
-                <td><button class="detalhes" data-id="${pedido.id_pedido}">detalhes</button></td>
+                <td><button class="detalhes btnDetalhes" data-id="${pedido.id_pedido}"><img src="img/btnDetalhes.svg"></button></td>
             `;
 
             // Adiciona a linha à tabela

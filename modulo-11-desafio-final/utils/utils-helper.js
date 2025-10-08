@@ -293,7 +293,7 @@ async function buscaItensCarrinho(id_carrinho) {
 }
 
 // verifica se a soma (quantidadeExistenteNoCarrinho + quantidadeAdicional) <= estoqueProduto
-async function verificaEstoqueProduto(id_produto, quantidadeAdicional, id_carrinho = null) {
+async function verificaEstoqueProdutoAdicionar(id_produto, quantidadeAdicional, id_carrinho = null) {
     // pega estoque atual do produto
     const sqlProduto = `SELECT estoque FROM produtos WHERE id_produto = ?`;
 
@@ -337,6 +337,14 @@ async function verificaEstoqueProduto(id_produto, quantidadeAdicional, id_carrin
     };
 }
 
+async function verificaEstoqueAtualizar(id_produto, quantidadeDesejada) {
+  const produto = await getQuery("SELECT estoque FROM produtos WHERE id_produto = ?", [id_produto]);
+  if (!produto) throw new NotFoundError(`Produto ${id_produto}`);
+
+  if (quantidadeDesejada > produto.estoque) {
+    throw new ValidationError("estoque", `Estoque insuficiente. Disponível: ${produto.estoque}`);
+  }
+}
 
 module.exports = {
     validarCategoria,
@@ -351,5 +359,6 @@ module.exports = {
     validarPedido,
     buscaItensCarrinho,
     verificaEstoque,
-    verificaEstoqueProduto
+    verificaEstoqueProdutoAdicionar,
+    verificaEstoqueAtualizar
 };

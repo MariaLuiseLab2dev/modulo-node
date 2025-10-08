@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Meu Carrinho</title>
-  <link rel="stylesheet" href="css/storedev.css">
-  <script defer src="script/cart.js"></script>
-  <script src="modal.js" defer></script>
-</head>
-<body>
-  <header>
-    <h1>Carrinho</h1>
-    <h3 id="qtdCarrinho">0 itens</h3>
-  </header>
 
-  <main>
-    <div id="itensCarrinho"></div>
-    <h2 id="totalCarrinho">Total: R$ 0,00</h2>
-    <button id="btnCheckout">Fazer Pedido</button>
-    <a href="storedev.html">&lt;</a>
-  </main>
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Carrinho</title>
+    <link rel="stylesheet" href="css/cart.css">
+    <script defer src="script/modal.js"></script>
+    <script defer src="script/cart.js"></script>
+</head>
+
+<body>
+    <header>
+        <a href="storedev.html"><img src="img/back.svg"></a>
+        <h1>Carrinho</h1>
+        <h3 id="qtdCarrinho">0 itens</h3>
+    </header>
+
+    <main>
+        <div id="itensCarrinho"></div>
+        <h2 id="totalCarrinho">Total: R$ 0,00</h2>
+        <button id="btnCheckout">Fazer Pedido</button>
+    </main>
+
+    <div id="alertModal" class="alertModal" role="alert" aria-hidden="true">
+    <div class="alertBox" id="alertBox">
+        <div class="alertConteudo">
+            <img id="alertIcon" class="alertIcone" src="" alt="Ícone do alerta">
+            <div class="alertText">
+                <div id="alertTitle" class="alertTitle"></div>
+                <div id="alertMessage" class="alertMessage"></div>
+            </div>
+        </div>
+        <button id="alertClose" class="alertClose" aria-label="Fechar alerta">&times;</button>
+    </div>
+</div>
 </body>
 </html>

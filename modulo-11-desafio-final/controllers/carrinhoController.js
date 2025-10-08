@@ -1,6 +1,6 @@
 const { runQuery, getQuery, allQuery } = require('../database/database-helper');
 const { NotFoundError, ValidationError } = require('../errors/apiError');
-const { validaIdCarrinho, validaEstoque, validaIdProduto, verificaEstoqueProduto, buscaItensCarrinho, validaIdItem } = require("../utils/utils-helper");
+const { validaIdCarrinho, validaEstoque, validaIdProduto, verificaEstoqueAtualizar, buscaItensCarrinho, validaIdItem, verificaEstoqueProdutoAdicionar } = require("../utils/utils-helper");
 
 exports.createCart = async (req, res, next) => {
     try {
@@ -47,7 +47,7 @@ exports.addItemToCart = async (req, res, next) => {
         }
 
         // verifica se a soma do que ja tem, ultrapassa o estoque
-        await verificaEstoqueProduto(idProdutoValidado, quantidade, idCarrinho);
+        await verificaEstoqueProdutoAdicionar(idProdutoValidado, quantidade, idCarrinho);
 
         // checa se já tem esse item no carrinho
         const sqlSelectItem = `SELECT * FROM itens_carrinho WHERE id_carrinho = ? AND id_produto = ?`;
@@ -109,7 +109,7 @@ exports.updateItemQuantity = async (req, res, next) => {
             throw new ValidationError("quantidade", "Não pode ser 0 ou negativa.");
         }
 
-        await verificaEstoqueProduto(idProdutoValidado, qtdValidada, idCarrinho);
+        await verificaEstoqueAtualizar(idProdutoValidado, qtdValidada, idCarrinho);
 
         // busca preço atual do produto
         const sqlProduto = `SELECT preco FROM produtos WHERE id_produto = ?`;
@@ -181,7 +181,7 @@ exports.checkoutCart = async (req, res, next) => {
 
         // valida estoque
         for (const item of itensCarrinho) {
-            await verificaEstoqueProduto(item.id_produto, item.quantidade);
+            await verificaEstoqueAtualizar(item.id_produto, item.quantidade);
         }
 
         // calcula total

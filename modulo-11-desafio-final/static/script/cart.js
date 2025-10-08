@@ -14,7 +14,7 @@ async function carregarCarrinho() {
 
     // Se não existir carrinho salvo, mostra mensagem e encerra
     if (!idCarrinho) {
-        alert("Seu carrinho está vazio.");
+        showAlert({ tipo: "error", mensagem: "Seu carrinho está vazio.", duracao: 0 });
         return;
     }
 
@@ -111,10 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST" // finaliza o pedido
         });
         const resultado = await resp.json();
-        alert(resultado.message); // mostra mensagem de sucesso
+        showAlert({ tipo: "success", mensagem: `${resultado.message}`, duracao: 2500 }); // mostra mensagem de sucesso
         localStorage.removeItem("idCarrinho"); // limpa carrinho salvo
         window.location.href = "storedev.html";   // redireciona para a loja
     });
 });
-
-document.addEventListener("DOMContentLoaded", carregarModal);

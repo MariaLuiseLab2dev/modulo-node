@@ -30,16 +30,104 @@
     padding: 0;
 }
 
-h1 {
-    font-weight: 700;
+h2 {
+    font-weight: 600;
     color: #712782;
 }
 
-main {
-    margin-top: 150px;
+/* layout principal: max-width e espaçamento para header fixo */
+.main {
+    margin: 0 auto;
+    padding: 150px 16px 32px; /* top = altura do header fixo + espaçamento */
 }
 
-header {
+/* Cada categoria deve ocupar a linha inteira */
+.categoriaSection {
+  display: block;       /* garante que a section seja um bloco */
+  width: 100%;          /* ocupa toda a largura */
+  margin-bottom: 32px;  /* espaço entre categorias */
+}
+
+/* Título da categoria */
+.categoriaSection h3 {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #712782;
+}
+
+/* Quantidade de produtos */
+.categoriaSection h4 {
+  font-size: 0.95rem;
+  font-weight: normal;
+  color: #717182;
+  margin-bottom: 16px;
+}
+
+/* Container que segura os cards */
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;          /* permite quebrar linha */
+  gap: 16px;                /* espaçamento entre os cards */
+  margin: 16px 0;
+}
+
+/* Cada card de produto */
+.card {
+    flex: 0 0 273px;          /* largura fixa de 273px */
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Título do produto */
+.card h5 {
+    color: #0A0A0A;
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin: 8px 0;
+}
+
+/* Descrição */
+.cardDescricao {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #717182;
+}
+
+/* PReço*/
+.cardPreco {
+    color: #712782;
+    font-weight: 600;
+    margin: 8px 0;
+}
+
+/* Botão */
+.card button {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #712782;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.card button:disabled {
+  background: #717182;
+  cursor: not-allowed;
+}
+
+.semEstoque {
+    color:#E7000B;
+} 
+
+.header {
     position: fixed;
     top: 0;
     left: 0;
@@ -51,7 +139,7 @@ header {
 }
 
 .fab {
-position: fixed;       /* fixo na tela */
+    position: fixed;            /* fixo na tela */
     bottom: 16px;          /* distância da borda inferior */
     right: 16px;            /* distância da borda esquerda */
     width: 56px;
@@ -63,4 +151,121 @@ position: fixed;       /* fixo na tela */
     display: flex;              /* ativa flexbox */
     align-items: center;        /* centraliza verticalmente */
     justify-content: center;    /* centraliza horizontalmente */
+}
+
+#alertModal {
+  z-index: 9999; 
+}
+
+.alertModal {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    display: none; 
+    align-items: flex-start;
+    padding-top: 20px;
+    justify-content: center; 
+    z-index: 9999; 
+}
+
+/* caixa do alerta com sombra e borda arredondada */
+.alertBox {
+    background: #fff; 
+    color: #111; 
+    border-radius: 8px; 
+    padding: 16px; 
+    min-width: 320px;
+    max-width: 90%;
+    display: flex;
+    align-items: center; 
+    position: relative; 
+}
+
+/* conteúdo do alert: ícone + textos */
+.alertConteudo {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* títulos e mensagens */
+.alertTitle {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.alertMessage {
+    font-size: 14px;
+    color: #1A1A1A;
+}
+
+/* ícone do tipo de alerta */
+.alertIcone {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.backDark {
+    display: none; /* começa escondido*/
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 9998;
+}
+
+/* borda verde para sucesso */
+.alertBox.success {
+  border: 2px solid #016630;
+}
+
+/* borda vermelha para erro */
+.alertBox.error {
+  border: 2px solid #9F0712;
+}
+
+/* borda verde para info também */
+.alertBox.info {
+  border: 2px solid #016630;
+}
+
+/* botão de fechar no canto superior direito */
+.alertClose {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    border: 0px;
+    background-color: #FFFFFF;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* variantes por tipo */
+.alertBox.success .alertIcone { background: #DCFCE7; color: #016630; }
+.alertBox.error .alertIcone { background: #FFE2E2; color: #9F0712; }
+.alertBox.info .alertIcone { background: #DCFCE7; color: #016630; }
+
+input {
+    border: 1px solid #F3F3F5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    height: 36px;
+    font-size: 0.95rem;
+    background-color: #F3F3F5;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.buscarCampo {
+    background: url("/static/img/search.svg") no-repeat 10px center;
+    background-size: 16px;
+    padding-left: 36px; /* espaço pro ícone */
+    height: 36px;
+    background-color: #F3F3F5;
+    border-radius: 8px;
+    margin: 8px 0;
 }

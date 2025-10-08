@@ -66,7 +66,11 @@ exports.createProduct = async (req, res, next) => {
 
 exports.getAllProducts = async (req, res, next) => {
     try {
-        const sqlSelectAll = `
+        // pega o termo de busca da query string (ex.: /produtos?filtro=blabla)
+        const termo = req.query.filtro || "";
+
+        // SQL base
+        let sqlSelectAll = `
         SELECT 
             p.id_produto,
             p.nome,
@@ -79,14 +83,75 @@ exports.getAllProducts = async (req, res, next) => {
         FROM produtos p
         JOIN categorias c 
         ON p.id_categoria = c.id_categoria
-        ORDER BY p.id_produto ASC
         `;
-        const produtos = await allQuery(sqlSelectAll);
-        return res.status(200).json(produtos)
+
+        const params = [];
+
+        // se veio termo de busca, filtra pelo nome do produto
+        if (termo) {
+            sqlSelectAll += " WHERE LOWER(p.nome) LIKE ?";
+            params.push(`%${termo.toLowerCase()}%`);
+        }
+
+        sqlSelectAll += " ORDER BY p.id_produto ASC";
+
+        const produtos = await allQuery(sqlSelectAll, params);
+        return res.status(200).json(produtos);
     } catch (error) {
         next(error);
     }
-}
+};
+
+exports.getProductsGrouped = async (req, res, next) => {
+    try {
+        const termo = req.query.filtro || "";
+
+        let sql = `
+        SELECT 
+            p.id_produto,
+            p.nome,
+            p.descricao,
+            p.preco,
+            p.estoque,
+            p.status,
+            p.id_categoria,
+            c.nome AS nome_categoria,
+            c.status
+        FROM produtos p
+        JOIN categorias c 
+        ON p.id_categoria = c.id_categoria
+        WHERE p.status = 1 AND c.status = 1`;
+
+        const params = [];
+        if (termo) {
+            sql += " AND LOWER(p.nome) LIKE ?";
+            params.push(`%${termo.toLowerCase()}%`);
+        }
+
+        sql += " ORDER BY c.nome, p.id_produto ASC";
+
+        const produtos = await allQuery(sql, params);
+
+        // Agrupar por categoria
+        const categorias = {}; // cria um objeto categorias pra por o a rray dos produtos
+        produtos.forEach(produto => { // pra cada produto
+            if (!categorias[produto.nome_categoria]) { // se aquela categoria Não existir no objeto
+                categorias[produto.nome_categoria] = { 
+                    // cria uma categoria
+                    nome_categoria: produto.nome_categoria, // pegando o nome
+                    quantidade: 0, // inicializando com 0
+                    produtos: [] // u marray vazio pra pôr os produtos
+                };
+            } //se ja existir
+            categorias[produto.nome_categoria].produtos.push(produto); // joga o nome do produto dentro do array
+            categorias[produto.nome_categoria].quantidade++; // soma +1 na quantidade
+        });
+
+        return res.status(200).json(Object.values(categorias));
+    } catch (error) {
+        next(error);
+    }
+};
 
 exports.getProductById = async (req, res, next) => {
     try {
@@ -94,13 +159,27 @@ exports.getProductById = async (req, res, next) => {
 
         const idProdutoValido = await validaNumero(id);
 
-        const sqlSelectProdutoPorId = `SELECT * FROM produtos WHERE id_produto = ?`;
+        const sqlSelectProdutoPorId = `
+        SELECT 
+            p.id_produto,
+            p.nome,
+            p.descricao,
+            p.preco,
+            p.estoque,
+            p.status,
+            p.id_categoria,
+            c.nome AS nome_categoria
+        FROM produtos p
+        JOIN categorias c 
+        ON p.id_categoria = c.id_categoria
+        WHERE p.id_produto = ?
+        `;
         const params = [idProdutoValido];
 
         const produto = await getQuery(sqlSelectProdutoPorId, params);
 
         if (!produto) {
-           throw new NotFoundError(`Produto ${idProdutoValido}`);
+            throw new NotFoundError(`Produto ${idProdutoValido}`);
         }
 
         return res.status(200).json(produto);
@@ -167,7 +246,7 @@ exports.updateProductById = async (req, res, next) => {
         ])
 
         if (!result.changes) {
-           throw new NotFoundError(`Produto ${idProdutoValido}`);
+            throw new NotFoundError(`Produto ${idProdutoValido}`);
         }
 
         return res.json({ message: "Produto atualizado com sucesso." })

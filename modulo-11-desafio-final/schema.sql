@@ -17,13 +17,14 @@ CREATE TABLE produtos (
     FOREIGN KEY (id_categoria)  REFERENCES categorias (id_categoria)
 );
 
+
 CREATE TABLE pedidos (
     id_pedido       INTEGER     PRIMARY KEY AUTOINCREMENT,
     data_criacao    DATE        DEFAULT (datetime('now')),
     valor_total     REAL        NOT NULL
 );
 
-select * FROM produtos;
+select * from produtos;
 
 CREATE TABLE itens_pedido (
     id_item     INTEGER     PRIMARY KEY AUTOINCREMENT,
@@ -40,8 +41,6 @@ CREATE TABLE carrinhos (
     id_carrinho INTEGER PRIMARY KEY AUTOINCREMENT,
     data_criacao DATE DEFAULT (datetime('now'))
 );
-
-drop table carrinhos;
 
 CREATE TABLE itens_carrinho (
     id_item     INTEGER PRIMARY KEY AUTOINCREMENT,
