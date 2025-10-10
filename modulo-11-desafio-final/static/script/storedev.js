@@ -133,8 +133,12 @@ function renderizarProdutos(categorias) {
                     const resultado = await responseAddItemCart.json();
                     console.log("Carrinho atualizado:", resultado);
 
-                    // Feedback para o usuário
-                    showAlert({ tipo: "success", mensagem: `Produto "${produto.nome}" adicionado ao carrinho!`, duracao: 2500 });
+                    if(resultado.status == "error") {
+                        showAlert({ tipo: "error", mensagem: "Não foi possível adicionar ao carrinho.", duracao: 3000 });
+                    } else { 
+                        // Feedback para o usuário
+                        showAlert({ tipo: "success", mensagem: `Produto "${produto.nome}" adicionado ao carrinho!`, duracao: 2500 });
+                    }
                 } catch (error) {
                     // Em caso de erro, loga e informa ao usuário
                     console.error("Erro ao adicionar ao carrinho:", error);

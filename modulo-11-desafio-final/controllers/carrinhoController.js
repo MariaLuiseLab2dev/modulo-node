@@ -181,8 +181,9 @@ exports.checkoutCart = async (req, res, next) => {
 
         // valida estoque
         for (const item of itensCarrinho) {
-            await verificaEstoqueAtualizar(item.id_produto, item.quantidade);
+            await verificaEstoqueAtualizar(item.id_produto, item.quantidade, idCarrinhoValidado);
         }
+        
 
         // calcula total
         const total = itensCarrinho.reduce((acc, item) => {

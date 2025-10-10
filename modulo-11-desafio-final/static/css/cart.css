@@ -16,31 +16,37 @@
     /* Mesmo nome da família */
     src: url("fonts/Montserrat-Bold.ttf");
     /* Caminho do arquivo bold */
-    font-weight: 700;
-    /* Peso negrito */
-    font-style: normal;
-    /* Estilo normal */
+    font-weight: 700; /* Peso negrito */
+    font-style: normal; /* Estilo normal */
 }
 
 * {
-    /* Reset básico */
     font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-size: 1rem;
 }
 
 html, body {
     width: 100%;
 }
 
-/* ===== HEADER ===== */
 header {
     display: flex;
     flex-direction: column;
     padding: 12px 16px;
     border-bottom: 1px solid #0000001A;
     background: #FFFFFF;
+}
+
+header div {
+    display: flex;
+    flex-direction: row;
+}
+
+#qtdCarrinho {
+    margin-left: 24px;
 }
 
 header a img {
@@ -63,7 +69,6 @@ header h3 {
 }
 
 .itemCarrinho {
-    display: flex;
     gap: 12px;
     padding: 12px;
     border: 1px solid #0000001A;
@@ -71,11 +76,22 @@ header h3 {
     margin: 16px 5px;
 }
 
-
 .itemCarrinho select {
     padding: 4px 6px;
     border-radius: 6px;
     border: 1px solid #0000001A;
+}
+
+.cardDescricao {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #717182;
+}
+
+.cardPreco {
+    color: #712782;
+    font-weight: 500;
+    margin: 8px 0;
 }
 
 /* Botão de deletar */
@@ -91,10 +107,10 @@ header h3 {
     height: 20px;
 }
 
-/* ===== RESUMO DO CARRINHO ===== */
 main {
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 #totalCarrinho {
@@ -104,8 +120,16 @@ main {
     text-align: right;
 }
 
+.btnCheck {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    width: 97%;
+    left: -10px;
+}
+
 #btnCheckout {
-    margin: 0 16px 16px 16px;
+    margin: 16px;
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -113,6 +137,12 @@ main {
     color: #FFFFFF;
     font-size: 1rem;
     cursor: pointer;
+    width: 100%;
+}
+
+.itensCarrinho {
+    display: flex;
+    flex-direction: column;
 }
 
 #alertModal {
@@ -135,7 +165,7 @@ main {
 /* caixa do alerta com sombra e borda arredondada */
 .alertBox {
     background: #fff; 
-    color: #111; 
+    color: #1A1A1A; 
     border-radius: 8px; 
     padding: 16px; 
     min-width: 320px;

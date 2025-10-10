@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Meu Carrinho</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/cart.css">
     <script defer src="script/modal.js"></script>
     <script defer src="script/cart.js"></script>
@@ -11,15 +12,19 @@
 
 <body>
     <header>
-        <a href="storedev.html"><img src="img/back.svg"></a>
-        <h1>Carrinho</h1>
+        <div> 
+            <a href="storedev.html"><img src="img/back.svg"></a>
+            <h1>Carrinho</h1>
+        </div>
         <h3 id="qtdCarrinho">0 itens</h3>
     </header>
 
     <main>
         <div id="itensCarrinho"></div>
-        <h2 id="totalCarrinho">Total: R$ 0,00</h2>
-        <button id="btnCheckout">Fazer Pedido</button>
+        <div class="btnCheck"> 
+            <h2 id="totalCarrinho">Total: R$ 0,00</h2>
+            <button id="btnCheckout">Fazer Pedido</button>
+        </div>
     </main>
 
     <div id="alertModal" class="alertModal" role="alert" aria-hidden="true">

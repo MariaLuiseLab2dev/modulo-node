@@ -13,25 +13,18 @@
 @font-face {
     /* Segunda variação da fonte */
     font-family: 'Montserrat';
-    /* Mesmo nome da família */
-    src: url("fonts/Montserrat-Bold.ttf");
-    /* Caminho do arquivo bold */
-    font-weight: 700;
-    /* Peso negrito */
-    font-style: normal;
-    /* Estilo normal */
+    src: url("fonts/Montserrat-Bold.ttf"); /* Caminho do arquivo bold */
+    font-weight: 700; /* Peso negrito */
+    font-style: normal; /* Estilo normal */
 }
 
 * {
     /* Reset básico */
     font-family: 'Montserrat', sans-serif;
     /* Fonte padrão */
-    box-sizing: border-box;
-    /* Inclui borda e padding no cálculo */
+    box-sizing: border-box; /* Inclui borda e padding no cálculo */
     margin: 0;
-    /* Remove margens padrão */
     padding: 0;
-    /* Remove paddings padrão */
 }
 
 ul {
@@ -404,6 +397,7 @@ tbody tr:last-child td {
     /* Espaço inferior */
 }
 
+
 table .statusVis {
     color: #016630;
     background-color: #DCFCE7;
@@ -447,8 +441,6 @@ dialog.dialogDiv {
     padding: 0;
     color: #1A1A1A;
 }
-
-
 
 .dialogConteudo {
     position: relative;
@@ -495,7 +487,7 @@ input,
     padding: 10px 12px;
     height: 36px;
     font-size: 0.95rem;
-    background: #fff;
+    background: #ffffff;
     box-sizing: border-box;
 }
 

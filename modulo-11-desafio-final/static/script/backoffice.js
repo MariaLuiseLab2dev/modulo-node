@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
             await carregarCategorias();
         } catch (error) {
             console.error("Erro no submit de categoria:", error);
-            showAlert({ tipo: "error", mensagem: "Erro de servidor", duracao: 0 });
+            showAlert({ tipo: "error", mensagem: "Erro de servidor", duracao: 3000 });
 
         }
     });

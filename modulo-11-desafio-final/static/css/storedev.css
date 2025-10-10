@@ -35,52 +35,56 @@ h2 {
     color: #712782;
 }
 
-/* layout principal: max-width e espaçamento para header fixo */
 .main {
     margin: 0 auto;
     padding: 150px 16px 32px; /* top = altura do header fixo + espaçamento */
 }
 
-/* Cada categoria deve ocupar a linha inteira */
 .categoriaSection {
-  display: block;       /* garante que a section seja um bloco */
-  width: 100%;          /* ocupa toda a largura */
-  margin-bottom: 32px;  /* espaço entre categorias */
+    display: block;       
+    width: 100%;          
+    margin-bottom: 32px;  
 }
 
 /* Título da categoria */
 .categoriaSection h3 {
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: #712782;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #712782;
 }
 
 /* Quantidade de produtos */
 .categoriaSection h4 {
-  font-size: 0.95rem;
-  font-weight: normal;
-  color: #717182;
-  margin-bottom: 16px;
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: #717182;
+    margin-bottom: 16px;
 }
 
 /* Container que segura os cards */
 .cardsContainer {
-  display: flex;
-  flex-wrap: wrap;          /* permite quebrar linha */
-  gap: 16px;                /* espaçamento entre os cards */
-  margin: 16px 0;
+    display: flex;
+    flex-wrap: wrap;          /* permite quebrar linha */
+    gap: 16px;                /* espaçamento entre os cards */
+    margin: 16px 0;
 }
 
 /* Cada card de produto */
 .card {
-    flex: 0 0 273px;          /* largura fixa de 273px */
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 12px;
-    background: #fff;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    min-width: 300px;      
+    box-sizing: border-box;
+    border: 1px solid #71718299;
+    border-radius: 8px;
+    padding: 12px;
+    background: #ffffff;
+}
+
+.infoProduto {
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
@@ -94,9 +98,9 @@ h2 {
 
 /* Descrição */
 .cardDescricao {
-  margin: 4px 0;
-  font-size: 0.9rem;
-  color: #717182;
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #717182;
 }
 
 /* PReço*/
@@ -113,14 +117,14 @@ h2 {
     border: none;
     border-radius: 6px;
     background: #712782;
-    color: #fff;
+    color: #FFFFFF;
     cursor: pointer;
-    transition: background 0.2s ease;
+    max-width: 302px;
 }
 
 .card button:disabled {
-  background: #717182;
-  cursor: not-allowed;
+    background: #71278299;
+    cursor: not-allowed;
 }
 
 .semEstoque {
@@ -154,7 +158,7 @@ h2 {
 }
 
 #alertModal {
-  z-index: 9999; 
+    z-index: 9999; 
 }
 
 .alertModal {
@@ -219,17 +223,17 @@ h2 {
 
 /* borda verde para sucesso */
 .alertBox.success {
-  border: 2px solid #016630;
+    border: 2px solid #016630;
 }
 
 /* borda vermelha para erro */
 .alertBox.error {
-  border: 2px solid #9F0712;
+    border: 2px solid #9F0712;
 }
 
 /* borda verde para info também */
 .alertBox.info {
-  border: 2px solid #016630;
+    border: 2px solid #016630;
 }
 
 /* botão de fechar no canto superior direito */
@@ -260,11 +264,15 @@ input {
     width: 100%;
 }
 
+input:focus {
+    outline: none;
+}
+
 .buscarCampo {
-    background: url("/static/img/search.svg") no-repeat 10px center;
-    background-size: 16px;
-    padding-left: 36px; /* espaço pro ícone */
-    height: 36px;
+    display: flex;
+    flex: row;
+    padding: 10px 10px 10px 10px;
+    height: 46px;
     background-color: #F3F3F5;
     border-radius: 8px;
     margin: 8px 0;

@@ -14,7 +14,7 @@ async function carregarCarrinho() {
 
     // Se não existir carrinho salvo, mostra mensagem e encerra
     if (!idCarrinho) {
-        showAlert({ tipo: "error", mensagem: "Seu carrinho está vazio.", duracao: 0 });
+        showAlert({ tipo: "error", mensagem: "Seu carrinho está vazio.", duracao: 3000});
         return;
     }
 
@@ -35,14 +35,16 @@ async function carregarCarrinho() {
         div.classList.add("itemCarrinho");         // TODO Estilizar classe CSS
 
         // Mostra nome, preço e descricao do produto
-        const nome = document.createElement("p");
+        const nome = document.createElement("h5");
         nome.textContent = `${item.nome}`;
-
-        const preco = document.createElement("p");
-        preco.textContent = formatarReal(item.preco);
 
         const descricao = document.createElement("p");
         descricao.textContent = `${item.descricao}`;
+        descricao.classList.add("cardDescricao");
+
+        const preco = document.createElement("p");
+        preco.textContent = formatarReal(item.preco);
+        preco.classList.add("cardPreco");
 
         // Cria um <select> para escolher a quantidade
         const selectQtd = document.createElement("select");
@@ -79,8 +81,8 @@ async function carregarCarrinho() {
 
         // Monta a div do item com nome, select e botão
         div.appendChild(nome);
-        div.appendChild(preco);
         div.appendChild(descricao);
+        div.appendChild(preco);
         div.appendChild(selectQtd);
         div.appendChild(btnDeletar);
         container.appendChild(div);
@@ -111,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "POST" // finaliza o pedido
         });
         const resultado = await resp.json();
-        showAlert({ tipo: "success", mensagem: `${resultado.message}`, duracao: 2500 }); // mostra mensagem de sucesso
+        showAlert({ tipo: "success", mensagem: `${resultado.message}`, duracao: 3000 }); // mostra mensagem de sucesso
         localStorage.removeItem("idCarrinho"); // limpa carrinho salvo
         window.location.href = "storedev.html";   // redireciona para a loja
     });
